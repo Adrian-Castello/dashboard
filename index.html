@@ -2,7 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0c0d" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <title>Project Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -87,6 +91,7 @@
   .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:16px;flex-wrap:wrap}
   .toolbar-left{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute)}
   .toolbar-left strong{color:var(--ink);font-weight:500}
+  .toolbar-right{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 
   .btn{font-family:'Inter Tight',sans-serif;font-size:13px;font-weight:500;padding:10px 16px;border-radius:8px;border:1px solid var(--line-strong);background:var(--bg-card);color:var(--ink);cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:8px;letter-spacing:-.005em}
   .btn:hover{background:var(--ink);color:var(--bg-card);border-color:var(--ink);transform:translateY(-1px);box-shadow:var(--shadow)}
@@ -106,22 +111,6 @@
   .theme-toggle .icon-moon{display:block}
   [data-theme="dark"] .theme-toggle .icon-sun{display:block}
   [data-theme="dark"] .theme-toggle .icon-moon{display:none}
-
-  /* SAVED INDICATOR */
-  .saved-indicator{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);opacity:0;transition:opacity .25s}
-  .saved-indicator.show{opacity:1}
-  .saved-indicator .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
-
-  /* DATA MENU */
-  .data-menu-wrap{position:relative}
-  .data-menu{position:absolute;top:calc(100% + 8px);right:0;background:var(--bg-card);border:1px solid var(--line-strong);border-radius:10px;box-shadow:var(--shadow-lg);padding:6px;min-width:220px;display:none;z-index:50;animation:popIn .15s ease both}
-  .data-menu.show{display:block}
-  .data-menu button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:transparent;border:none;color:var(--ink);font-family:'Inter Tight',sans-serif;font-size:13px;padding:9px 11px;border-radius:7px;cursor:pointer;transition:background .12s;letter-spacing:-.005em}
-  .data-menu button:hover{background:var(--bg-elev)}
-  .data-menu button.danger{color:var(--red)}
-  .data-menu .sep{height:1px;background:var(--line);margin:4px 0}
-  .data-menu .hint{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-mute);padding:6px 11px 4px;letter-spacing:.12em;text-transform:uppercase}
-  .data-menu svg{width:15px;height:15px;flex-shrink:0;opacity:.7}
 
   /* GRID */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:20px}
@@ -290,16 +279,113 @@
   .sync-status.error .sync-dot{background:var(--red)}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-  @media (max-width:600px){
-    body{padding:20px 14px 60px}
-    .header{flex-direction:column;align-items:flex-start;gap:16px}
-    .header-stats{width:100%;justify-content:space-between;gap:16px}
-    .stat{text-align:left}
-    .grid{grid-template-columns:1fr;gap:16px}
-    .card{padding:20px}
-    .history-row{grid-template-columns:1fr 60px;gap:8px}
-    .history-row .h-bar,.history-row .h-mini{grid-column:1/-1}
-    .modal{padding:22px}
+  /* RESPONSIVE — TABLET */
+  @media (max-width:900px){
+    body{padding:24px 18px 60px}
+    .header{gap:20px}
+    .brand h1{font-size:clamp(32px,5vw,44px)}
+    .header-stats{gap:20px}
+    .stat-value{font-size:26px}
+    .grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+  }
+
+  /* RESPONSIVE — MOBILE */
+  @media (max-width:640px){
+    body{padding:16px 12px 56px}
+
+    /* HEADER becomes a clean stack */
+    .header{flex-direction:column;align-items:stretch;gap:18px;padding-bottom:22px;margin-bottom:22px}
+    .brand h1{font-size:30px;line-height:1}
+    .brand .eyebrow{font-size:10px}
+    .brand .date{font-size:11px}
+
+    /* Stats row: 2 stats + theme + user, in one tidy row */
+    .header-stats{display:grid;grid-template-columns:1fr 1fr auto auto;gap:10px;align-items:center;width:100%}
+    .stat{text-align:left;min-width:0}
+    .stat-label{font-size:9px}
+    .stat-value{font-size:22px}
+    .stat-value sup{font-size:11px}
+    .theme-toggle{width:36px;height:36px;border-radius:9px}
+    .theme-toggle svg{width:15px;height:15px}
+
+    /* User chip — only avatar visible on mobile to save space */
+    .user-chip{padding:5px;border-radius:99px}
+    .user-chip .email{display:none}
+    .user-chip .avatar{width:26px;height:26px;font-size:11px}
+    .user-menu{right:0;left:auto;min-width:240px}
+
+    /* Tabs full width, equal split */
+    .tabs{width:100%;margin-bottom:20px}
+    .tab{flex:1;text-align:center;font-size:13px;padding:10px}
+
+    /* Toolbar: info above, controls below */
+    .toolbar{flex-direction:column;align-items:stretch;gap:12px;margin-bottom:18px}
+    .toolbar-left{order:2;text-align:center}
+    .toolbar-right{order:1;width:100%;justify-content:space-between;gap:10px}
+    .sync-status{font-size:9.5px}
+    #addProjectBtn{flex:1;justify-content:center;padding:11px 14px;font-size:13.5px}
+
+    /* Cards: single column, comfy padding */
+    .grid{grid-template-columns:1fr;gap:14px}
+    .card{padding:18px;gap:14px;border-radius:12px}
+    .card-title{font-size:20px}
+    .card-meta{font-size:10px}
+    .progress-value{font-size:30px}
+    .progress-value sup{font-size:13px}
+    .progress-label{font-size:9.5px}
+
+    /* Slider: bigger touch target on phones */
+    .slider-row{gap:8px}
+    .step-btn{width:32px;height:32px;font-size:16px}
+    input[type=range].slider{height:32px}
+    input[type=range].slider::-webkit-slider-thumb{width:22px;height:22px;margin-top:-9px}
+    input[type=range].slider::-moz-range-thumb{width:22px;height:22px}
+
+    /* Todos: better touch targets */
+    .todo{padding:10px 6px 10px 4px;gap:8px}
+    .todo-check{width:20px;height:20px}
+    .todo-check:checked::after{left:5px;top:1px;width:6px;height:11px;border-width:0 2px 2px 0}
+    .todo-text{font-size:14px;line-height:1.4}
+    .todo-weight{font-size:11px;width:50px;padding:4px 6px}
+    .todo-del{opacity:1;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:18px;border-radius:6px}
+    .add-todo{padding:10px 12px;font-size:13px}
+
+    /* Modal */
+    .modal{padding:22px;border-radius:12px;max-width:100%}
+    .modal-title{font-size:20px}
+    .modal-body{font-size:13.5px}
+    .modal-actions{flex-direction:column-reverse;gap:8px}
+    .modal-actions .btn{width:100%;justify-content:center;padding:12px}
+
+    /* Auth screen */
+    .auth-card{padding:32px 24px;border-radius:14px}
+    .auth-title{font-size:30px}
+    .auth-sub{font-size:13px;margin-bottom:22px}
+    .auth-field input{padding:12px 13px;font-size:15px} /* 15px to prevent iOS zoom */
+    .auth-submit{padding:13px 16px;font-size:14.5px}
+    .auth-theme-corner{top:14px;right:14px}
+
+    /* Historical bars: full-width readable */
+    .history-row{grid-template-columns:1fr;gap:6px}
+    .history-row .h-bar,.history-row .h-mini,.history-row .h-pct{grid-column:1/-1}
+    .history-row .h-pct{text-align:left}
+
+    /* Footer compact */
+    .footer{font-size:9px;margin-top:40px;padding-top:18px}
+  }
+
+  /* RESPONSIVE — SMALL PHONES (iPhone SE etc) */
+  @media (max-width:380px){
+    body{padding:14px 10px 50px}
+    .brand h1{font-size:26px}
+    .stat-value{font-size:19px}
+    .card{padding:16px}
+    .card-title{font-size:18px}
+    .progress-value{font-size:26px}
+    .auth-card{padding:26px 20px}
+    .auth-title{font-size:26px}
+    .header-stats{grid-template-columns:1fr 1fr auto auto;gap:8px}
+    .theme-toggle{width:34px;height:34px}
   }
 </style>
 </head>
@@ -382,39 +468,15 @@
 
   <div class="toolbar">
     <div class="toolbar-left" id="toolbarInfo">— vista de hoy —</div>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <div class="toolbar-right">
       <div class="sync-status" id="syncStatus"><span class="sync-dot"></span><span id="syncText">—</span></div>
-      <div class="data-menu-wrap">
-        <button class="btn" id="dataBtn" title="Datos y backup">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"/></svg>
-          Datos
-        </button>
-        <div class="data-menu" id="dataMenu">
-          <div class="hint">Backup y restauración</div>
-          <button id="exportBtn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Exportar a archivo
-          </button>
-          <button id="importBtn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            Importar desde archivo
-          </button>
-          <div class="sep"></div>
-          <div class="hint">Zona peligrosa</div>
-          <button class="danger" id="wipeBtn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-            Borrar todos los datos
-          </button>
-        </div>
-      </div>
       <button class="btn primary" id="addProjectBtn"><span class="plus">+</span> Nuevo proyecto</button>
-      <input type="file" id="importFile" accept="application/json,.json" style="display:none">
     </div>
   </div>
 
   <main id="content"></main>
 
-  <div class="footer">guardado automáticamente en este navegador · usa "Datos" para exportar un backup</div>
+  <div class="footer">sincronizado en la nube · accesible desde cualquier dispositivo</div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true">
@@ -556,27 +618,47 @@
     }
   }
 
-  async function saveStateToCloud(){
-    if(!currentUser) return;
-    setSyncStatus('syncing', 'Guardando…');
-    try{
-      const payload = { projects: state.projects };
-      // Always cache locally first
-      localStore.set(STORAGE_KEY, JSON.stringify(payload));
-      const { error } = await supa
-        .from('user_data')
-        .upsert({
-          user_id: currentUser.id,
-          data: payload,
-          updated_at: new Date().toISOString()
-        }, { onConflict: 'user_id' });
-      if(error) throw error;
-      setSyncStatus('synced', 'Sincronizado');
-    }catch(e){
-      console.error('cloud save failed', e);
-      setSyncStatus('error', 'Sin conexión');
+  async function saveStateToCloud(opts){
+    if(!currentUser || !supa) return false;
+    const silent = opts && opts.silent;
+    if(!silent) setSyncStatus('syncing', 'Guardando…');
+    const payload = { projects: state.projects };
+    // Always cache locally first (instant offline persistence)
+    localStore.set(STORAGE_KEY, JSON.stringify(payload));
+
+    // Try up to 3 times with small backoff for flaky connections
+    const attempts = 3;
+    for(let i=0; i<attempts; i++){
+      try{
+        const { error } = await supa
+          .from('user_data')
+          .upsert({
+            user_id: currentUser.id,
+            data: payload,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'user_id' });
+        if(error) throw error;
+        setSyncStatus('synced', 'Sincronizado');
+        return true;
+      }catch(e){
+        console.warn(`cloud save attempt ${i+1} failed`, e);
+        if(i < attempts-1){
+          await new Promise(r => setTimeout(r, 500 * (i+1))); // 500ms, 1000ms
+        } else {
+          setSyncStatus('error', 'Sin conexión');
+        }
+      }
     }
+    return false;
   }
+
+  // Periodically retry pending saves if we're in error state
+  setInterval(() => {
+    const status = document.getElementById('syncStatus');
+    if(status && status.classList.contains('error') && currentUser){
+      saveStateToCloud({silent: true});
+    }
+  }, 15000);
 
   let saveTimer = null;
   function scheduleSave(){
@@ -1037,112 +1119,6 @@
   document.getElementById('themeToggle').onclick = toggleAppTheme;
   document.getElementById('authThemeToggle').onclick = toggleAppTheme;
 
-  // ============ DATA MENU (export / import / wipe) ============
-  const dataBtn = document.getElementById('dataBtn');
-  const dataMenu = document.getElementById('dataMenu');
-  const exportBtn = document.getElementById('exportBtn');
-  const importBtn = document.getElementById('importBtn');
-  const wipeBtn = document.getElementById('wipeBtn');
-  const importFile = document.getElementById('importFile');
-
-  function toggleMenu(force){
-    const show = typeof force === 'boolean' ? force : !dataMenu.classList.contains('show');
-    dataMenu.classList.toggle('show', show);
-  }
-  dataBtn.addEventListener('click', e => { e.stopPropagation(); toggleMenu(); });
-  document.addEventListener('click', e => {
-    if(!dataMenu.contains(e.target) && e.target !== dataBtn) toggleMenu(false);
-  });
-
-  exportBtn.addEventListener('click', async () => {
-    toggleMenu(false);
-    const theme = document.documentElement.getAttribute('data-theme') || 'light';
-    const payload = {
-      app: 'project-tracker',
-      version: 1,
-      exportedAt: new Date().toISOString(),
-      theme,
-      projects: state.projects
-    };
-    const json = JSON.stringify(payload, null, 2);
-    const blob = new Blob([json], {type:'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    const stamp = new Date().toISOString().slice(0,10).replace(/-/g,'');
-    a.href = url;
-    a.download = `project-tracker-${stamp}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  });
-
-  importBtn.addEventListener('click', () => {
-    toggleMenu(false);
-    importFile.value = '';
-    importFile.click();
-  });
-
-  importFile.addEventListener('change', async () => {
-    const file = importFile.files && importFile.files[0];
-    if(!file) return;
-    try{
-      const text = await file.text();
-      const parsed = JSON.parse(text);
-      if(!parsed || !Array.isArray(parsed.projects)){
-        await confirmModal({
-          title: 'Archivo no válido',
-          body: 'El archivo seleccionado no parece ser un backup de Project Tracker. Asegúrate de que es un <strong>.json</strong> exportado desde aquí.',
-          confirmText: 'Entendido',
-          cancelText: 'Cerrar'
-        });
-        return;
-      }
-      const hasData = state.projects.length > 0;
-      let mode = 'replace';
-      if(hasData){
-        const ok = await confirmModal({
-          title: 'Importar datos',
-          body: `Vas a importar <strong>${parsed.projects.length} proyecto${parsed.projects.length===1?'':'s'}</strong>. Esto <strong>sustituirá</strong> tus datos actuales (${state.projects.length} proyecto${state.projects.length===1?'':'s'}). ¿Continuar?`,
-          confirmText: 'Sustituir',
-          cancelText: 'Cancelar'
-        });
-        if(!ok) return;
-      }
-      // Apply
-      state.projects = parsed.projects;
-      state.projects.forEach(migrateProject);
-      if(parsed.theme){
-        applyTheme(parsed.theme);
-        saveThemePref(parsed.theme);
-      }
-      await saveStateToCloud();
-      render();
-    }catch(err){
-      console.error(err);
-      await confirmModal({
-        title: 'No se pudo leer el archivo',
-        body: 'Hubo un problema al leer el archivo. Comprueba que es un JSON válido exportado desde Project Tracker.',
-        confirmText: 'Entendido',
-        cancelText: 'Cerrar'
-      });
-    }
-  });
-
-  wipeBtn.addEventListener('click', async () => {
-    toggleMenu(false);
-    const ok = await confirmModal({
-      title: 'Borrar todos los datos',
-      body: 'Vas a eliminar <strong>todos tus proyectos y tareas</strong> de tu cuenta. Esta acción no se puede deshacer. Si quieres conservar un backup, exporta primero.',
-      confirmText: 'Borrar todo',
-      cancelText: 'Cancelar'
-    });
-    if(!ok) return;
-    state.projects = [];
-    await saveStateToCloud();
-    render();
-  });
-
   // ============ AUTH UI ============
   const authScreen = document.getElementById('authScreen');
   const appWrap = document.getElementById('appWrap');
@@ -1216,8 +1192,9 @@
     if(m.includes('user already registered')) return 'Ya existe una cuenta con ese email. Prueba a iniciar sesión.';
     if(m.includes('password should be at least')) return 'La contraseña debe tener al menos 6 caracteres.';
     if(m.includes('unable to validate email') || m.includes('invalid email')) return 'El email no parece válido.';
-    if(m.includes('email not confirmed')) return 'Tu email aún no está confirmado. Revisa tu bandeja de entrada.';
-    if(m.includes('rate limit') || m.includes('too many')) return 'Demasiados intentos. Espera un momento y vuelve a intentarlo.';
+    if(m.includes('email not confirmed')) return 'Tu email aún no está confirmado. Revisa tu bandeja de entrada (o desactiva "Confirm email" en Supabase → Authentication → Providers → Email).';
+    if(m.includes('email rate limit')) return 'Supabase ha limitado el envío de emails (máx 2/hora en plan gratuito). Desactiva "Confirm email" en Supabase → Authentication → Providers → Email, y espera 15-30 min.';
+    if(m.includes('rate limit') || m.includes('too many')) return 'Has hecho demasiados intentos seguidos. Espera 15-30 minutos y vuelve a intentarlo. Si el problema persiste, revisa que "Confirm email" esté desactivado en Supabase.';
     if(m.includes('network') || m.includes('fetch')) return 'Problema de conexión. Comprueba tu internet.';
     return msg || 'Algo ha fallado. Inténtalo de nuevo.';
   }
@@ -1280,6 +1257,11 @@
       cancelText: 'Cancelar'
     });
     if(!ok) return;
+    // Flush any pending changes BEFORE signing out
+    clearTimeout(saveTimer);
+    if(currentUser){
+      try{ await saveStateToCloud(); }catch(e){ console.error('Final save failed', e); }
+    }
     await supa.auth.signOut();
   });
 
