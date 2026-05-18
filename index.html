@@ -239,6 +239,57 @@
   .btn-danger{background:var(--red);color:#fff;border-color:var(--red)}
   .btn-danger:hover{background:var(--red);color:#fff;border-color:var(--red);filter:brightness(1.08);transform:translateY(-1px)}
 
+  /* AUTH SCREEN */
+  .auth-screen{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:900;padding:20px;background-image:radial-gradient(circle at 20% 0%,var(--bg-gradient-a),transparent 50%),radial-gradient(circle at 80% 100%,var(--bg-gradient-b),transparent 50%)}
+  .auth-screen.show{display:flex}
+  .auth-card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:40px 36px;width:100%;max-width:420px;box-shadow:var(--shadow-lg);animation:popIn .3s cubic-bezier(.2,.8,.2,1) both}
+  .auth-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:8px}
+  .auth-title{font-family:'Fraunces',serif;font-weight:400;font-size:36px;letter-spacing:-.02em;line-height:1;margin-bottom:6px;color:var(--ink)}
+  .auth-title em{font-style:italic;font-weight:300;color:var(--ink-soft)}
+  .auth-sub{color:var(--ink-mute);font-size:13.5px;margin-bottom:28px;line-height:1.5}
+  .auth-form{display:flex;flex-direction:column;gap:14px}
+  .auth-field{display:flex;flex-direction:column;gap:6px}
+  .auth-field label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute)}
+  .auth-field input{font-family:'Inter Tight',sans-serif;font-size:14px;padding:11px 13px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s;letter-spacing:-.005em}
+  .auth-field input:focus{border-color:var(--ink);box-shadow:0 0 0 3px var(--bg-elev)}
+  .auth-field input::placeholder{color:var(--ink-faint)}
+  .auth-submit{margin-top:6px;font-family:'Inter Tight',sans-serif;font-size:14px;font-weight:500;padding:12px 18px;border-radius:8px;border:1px solid var(--ink);background:var(--ink);color:var(--bg-card);cursor:pointer;transition:all .15s;letter-spacing:-.005em}
+  .auth-submit:hover:not(:disabled){transform:translateY(-1px);box-shadow:var(--shadow);filter:brightness(1.05)}
+  .auth-submit:disabled{opacity:.55;cursor:not-allowed}
+  .auth-switch{margin-top:18px;text-align:center;font-size:13px;color:var(--ink-mute)}
+  .auth-switch button{background:none;border:none;color:var(--ink);font-family:inherit;font-size:inherit;cursor:pointer;font-weight:500;text-decoration:underline;text-underline-offset:3px;padding:0;letter-spacing:-.005em}
+  .auth-switch button:hover{color:var(--ink-soft)}
+  .auth-error{margin-top:14px;padding:10px 12px;border-radius:7px;background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.25);color:var(--red);font-size:12.5px;line-height:1.4;display:none}
+  .auth-error.show{display:block}
+  [data-theme="dark"] .auth-error{background:rgba(240,72,72,.1);border-color:rgba(240,72,72,.3)}
+  .auth-success{margin-top:14px;padding:10px 12px;border-radius:7px;background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.25);color:var(--green);font-size:12.5px;line-height:1.4;display:none}
+  .auth-success.show{display:block}
+  .auth-theme-corner{position:absolute;top:20px;right:20px}
+
+  /* USER CHIP IN HEADER */
+  .user-chip{display:inline-flex;align-items:center;gap:8px;padding:6px 10px 6px 6px;border:1px solid var(--line-strong);background:var(--bg-card);border-radius:99px;font-size:12.5px;color:var(--ink);cursor:pointer;transition:all .15s;font-family:'Inter Tight',sans-serif;letter-spacing:-.005em}
+  .user-chip:hover{background:var(--bg-elev);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+  .user-chip .avatar{width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--bg-card);display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:11px;letter-spacing:0;font-family:'JetBrains Mono',monospace;text-transform:uppercase}
+  .user-chip .email{max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .user-menu{position:absolute;top:calc(100% + 8px);right:0;background:var(--bg-card);border:1px solid var(--line-strong);border-radius:10px;box-shadow:var(--shadow-lg);padding:6px;min-width:220px;display:none;z-index:50;animation:popIn .15s ease both}
+  .user-menu.show{display:block}
+  .user-menu .user-info{padding:10px 11px;border-bottom:1px solid var(--line);margin-bottom:4px}
+  .user-menu .user-info .u-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-mute);letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px}
+  .user-menu .user-info .u-email{font-size:13px;color:var(--ink);word-break:break-all;letter-spacing:-.005em}
+  .user-menu button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:transparent;border:none;color:var(--ink);font-family:'Inter Tight',sans-serif;font-size:13px;padding:9px 11px;border-radius:7px;cursor:pointer;transition:background .12s;letter-spacing:-.005em}
+  .user-menu button:hover{background:var(--bg-elev)}
+  .user-menu button.danger{color:var(--red)}
+  .user-menu svg{width:15px;height:15px;flex-shrink:0;opacity:.7}
+  .user-wrap{position:relative}
+
+  /* SYNC STATUS */
+  .sync-status{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute)}
+  .sync-status .sync-dot{width:6px;height:6px;border-radius:50%;background:var(--ink-faint);transition:background .2s}
+  .sync-status.synced .sync-dot{background:var(--green)}
+  .sync-status.syncing .sync-dot{background:var(--orange);animation:pulse 1.2s ease-in-out infinite}
+  .sync-status.error .sync-dot{background:var(--red)}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
   @media (max-width:600px){
     body{padding:20px 14px 60px}
     .header{flex-direction:column;align-items:flex-start;gap:16px}
@@ -253,7 +304,38 @@
 </style>
 </head>
 <body>
-<div class="wrap">
+
+<!-- AUTH SCREEN -->
+<div class="auth-screen" id="authScreen">
+  <button class="theme-toggle auth-theme-corner" id="authThemeToggle" title="Cambiar tema" aria-label="Cambiar tema">
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2.5 12h2M19.5 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+  </button>
+  <div class="auth-card">
+    <div class="auth-eyebrow">Project Tracker</div>
+    <h1 class="auth-title" id="authTitle">Bienvenido <em>de vuelta</em>.</h1>
+    <p class="auth-sub" id="authSub">Inicia sesión para acceder a tus proyectos desde cualquier dispositivo.</p>
+    <form class="auth-form" id="authForm" autocomplete="on">
+      <div class="auth-field">
+        <label for="authEmail">Email</label>
+        <input type="email" id="authEmail" placeholder="tu@email.com" required autocomplete="email">
+      </div>
+      <div class="auth-field">
+        <label for="authPassword">Contraseña</label>
+        <input type="password" id="authPassword" placeholder="••••••••" required minlength="6" autocomplete="current-password">
+      </div>
+      <button type="submit" class="auth-submit" id="authSubmit">Iniciar sesión</button>
+    </form>
+    <div class="auth-error" id="authError"></div>
+    <div class="auth-success" id="authSuccess"></div>
+    <div class="auth-switch">
+      <span id="authSwitchText">¿No tienes cuenta?</span>
+      <button type="button" id="authSwitchBtn">Crear cuenta</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" id="appWrap" style="display:none">
 
   <header class="header">
     <div class="brand">
@@ -274,6 +356,22 @@
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2.5 12h2M19.5 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
       </button>
+      <div class="user-wrap">
+        <button class="user-chip" id="userChip" title="Cuenta">
+          <span class="avatar" id="userAvatar">?</span>
+          <span class="email" id="userEmail"></span>
+        </button>
+        <div class="user-menu" id="userMenu">
+          <div class="user-info">
+            <div class="u-label">Sesión iniciada</div>
+            <div class="u-email" id="userMenuEmail"></div>
+          </div>
+          <button id="logoutBtn" class="danger">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -285,7 +383,7 @@
   <div class="toolbar">
     <div class="toolbar-left" id="toolbarInfo">— vista de hoy —</div>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <div class="saved-indicator" id="savedIndicator"><span class="dot"></span><span>Guardado</span></div>
+      <div class="sync-status" id="syncStatus"><span class="sync-dot"></span><span id="syncText">—</span></div>
       <div class="data-menu-wrap">
         <button class="btn" id="dataBtn" title="Datos y backup">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"/></svg>
@@ -331,83 +429,177 @@
 </div>
 
 <script>
+  // ============ SUPABASE CONFIG ============
+  const SUPABASE_URL = 'https://rmolxcgoenswxmifqden.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtb2x4Y2dvZW5zd3htaWZxZGVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMjA0OTIsImV4cCI6MjA5NDY5NjQ5Mn0.wB4kDQ3m6y2KblvWj5DbyMitwK7TkPzTHHpPSEjlXD4';
+
+  // Show a fatal error in the auth screen if something critical fails before init.
+  function showFatalError(msg){
+    document.addEventListener('DOMContentLoaded', () => {
+      const err = document.getElementById('authError');
+      const screen = document.getElementById('authScreen');
+      if(screen) screen.classList.add('show');
+      if(err){ err.innerHTML = msg; err.classList.add('show'); }
+    });
+    const err = document.getElementById('authError');
+    const screen = document.getElementById('authScreen');
+    if(screen) screen.classList.add('show');
+    if(err){ err.innerHTML = msg; err.classList.add('show'); }
+  }
+
+  // Load the Supabase SDK from multiple CDNs in case one is blocked.
+  function loadScript(url){
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = url;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error('Failed to load ' + url));
+      document.head.appendChild(s);
+    });
+  }
+  async function loadSupabaseSDK(){
+    const cdns = [
+      'https://unpkg.com/@supabase/supabase-js@2',
+      'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2',
+      'https://esm.sh/@supabase/supabase-js@2'
+    ];
+    for(const url of cdns){
+      try{
+        await loadScript(url);
+        if(window.supabase && window.supabase.createClient) return true;
+      }catch(e){
+        console.warn('CDN failed:', url, e.message);
+      }
+    }
+    return false;
+  }
+
+  let supa = null;
+  // We delay the rest of the app until the SDK is available.
+  // If it never loads, we surface a clear error.
+
   // ============ STATE & STORAGE ============
-  // Hybrid storage layer:
-  //  - localStorage: persists across reloads/sessions on any browser/website (primary)
-  //  - window.storage: fallback for environments where localStorage is blocked
-  // This means: upload the HTML anywhere (Netlify, Vercel, your own hosting...) and
-  // your data survives between visits automatically. No login needed.
+  // Cloud-first storage:
+  //  - When user is signed in: data syncs to Supabase (user_data table), accessible from any device.
+  //  - localStorage is used as an offline cache and for the theme preference.
   const STORAGE_KEY = 'project_tracker_v1';
   const THEME_KEY  = 'project_tracker_theme_v1';
 
-  const storage = {
-    async get(key){
-      try{
-        const v = localStorage.getItem(key);
-        if(v !== null) return v;
-      }catch(e){}
-      try{
-        if(window.storage && window.storage.get){
-          const r = await window.storage.get(key);
-          if(r && r.value) return r.value;
-        }
-      }catch(e){}
-      return null;
-    },
-    async set(key, value){
-      let ok = false;
-      try{ localStorage.setItem(key, value); ok = true; }catch(e){}
-      try{
-        if(window.storage && window.storage.set){
-          await window.storage.set(key, value);
-          ok = true;
-        }
-      }catch(e){}
-      return ok;
-    }
+  const localStore = {
+    get(key){ try{ return localStorage.getItem(key); }catch(e){ return null; } },
+    set(key, value){ try{ localStorage.setItem(key, value); return true; }catch(e){ return false; } },
+    remove(key){ try{ localStorage.removeItem(key); }catch(e){} }
   };
 
   let state = {
     projects: [],
     view: 'today' // 'today' | 'historical'
   };
+  let currentUser = null; // {id, email} or null
 
-  async function loadState(){
+  function setSyncStatus(kind, text){
+    const el = document.getElementById('syncStatus');
+    const t  = document.getElementById('syncText');
+    if(!el || !t) return;
+    el.classList.remove('synced','syncing','error');
+    if(kind) el.classList.add(kind);
+    t.textContent = text;
+  }
+
+  // ---- Loading & saving (cloud) ----
+  async function loadStateFromCloud(){
+    if(!currentUser) return;
+    setSyncStatus('syncing', 'Cargando…');
     try{
-      const raw = await storage.get(STORAGE_KEY);
-      if(raw){
-        const parsed = JSON.parse(raw);
-        if(parsed.projects){
-          state.projects = parsed.projects;
-          state.projects.forEach(migrateProject);
+      const { data, error } = await supa
+        .from('user_data')
+        .select('data')
+        .eq('user_id', currentUser.id)
+        .maybeSingle();
+      if(error) throw error;
+      if(data && data.data && Array.isArray(data.data.projects)){
+        state.projects = data.data.projects;
+        state.projects.forEach(migrateProject);
+      } else {
+        // First time for this user — try to upgrade from any local data they may have
+        const localRaw = localStore.get(STORAGE_KEY);
+        if(localRaw){
+          try{
+            const parsed = JSON.parse(localRaw);
+            if(Array.isArray(parsed.projects) && parsed.projects.length){
+              state.projects = parsed.projects;
+              state.projects.forEach(migrateProject);
+              await saveStateToCloud(); // push local data to their new cloud account
+            }
+          }catch(e){}
+        } else {
+          state.projects = [];
         }
       }
+      // Also cache locally for offline / fast reload
+      localStore.set(STORAGE_KEY, JSON.stringify({projects: state.projects}));
+      setSyncStatus('synced', 'Sincronizado');
     }catch(e){
-      console.error('load failed', e);
+      console.error('cloud load failed', e);
+      setSyncStatus('error', 'Sin conexión');
+      // Fall back to local cache
+      const localRaw = localStore.get(STORAGE_KEY);
+      if(localRaw){
+        try{
+          const parsed = JSON.parse(localRaw);
+          if(Array.isArray(parsed.projects)){
+            state.projects = parsed.projects;
+            state.projects.forEach(migrateProject);
+          }
+        }catch(_){}
+      }
+    }
+  }
+
+  async function saveStateToCloud(){
+    if(!currentUser) return;
+    setSyncStatus('syncing', 'Guardando…');
+    try{
+      const payload = { projects: state.projects };
+      // Always cache locally first
+      localStore.set(STORAGE_KEY, JSON.stringify(payload));
+      const { error } = await supa
+        .from('user_data')
+        .upsert({
+          user_id: currentUser.id,
+          data: payload,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id' });
+      if(error) throw error;
+      setSyncStatus('synced', 'Sincronizado');
+    }catch(e){
+      console.error('cloud save failed', e);
+      setSyncStatus('error', 'Sin conexión');
     }
   }
 
   let saveTimer = null;
   function scheduleSave(){
     clearTimeout(saveTimer);
-    saveTimer = setTimeout(saveState, 250);
-  }
-  async function saveState(){
-    try{
-      await storage.set(STORAGE_KEY, JSON.stringify({projects: state.projects}));
-      flashSaved();
-    }catch(e){ console.error('save failed', e); }
+    saveTimer = setTimeout(saveStateToCloud, 600);
   }
 
-  // Save before tab closes / on visibility change (extra safety net)
+  // Best-effort flush on tab close
   window.addEventListener('beforeunload', () => {
-    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify({projects: state.projects})); }catch(e){}
+    try{ localStore.set(STORAGE_KEY, JSON.stringify({projects: state.projects})); }catch(_){}
   });
   document.addEventListener('visibilitychange', () => {
     if(document.visibilityState === 'hidden'){
-      try{ localStorage.setItem(STORAGE_KEY, JSON.stringify({projects: state.projects})); }catch(e){}
+      try{ localStore.set(STORAGE_KEY, JSON.stringify({projects: state.projects})); }catch(_){}
+      if(currentUser) saveStateToCloud(); // flush pending changes
     }
   });
+
+  // Theme uses localStorage only (browser-level preference)
+  const themeStore = {
+    get(){ return localStore.get(THEME_KEY); },
+    set(v){ localStore.set(THEME_KEY, v); }
+  };
 
   // ============ MODEL ============
   function uid(){ return Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4); }
@@ -829,29 +1021,21 @@
   function applyTheme(t){
     document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
   }
-  async function loadTheme(){
-    const v = await storage.get(THEME_KEY);
+  function loadTheme(){
+    const v = themeStore.get();
     if(v) return v;
     if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
     return 'light';
   }
-  async function saveTheme(t){ await storage.set(THEME_KEY, t); }
-  document.getElementById('themeToggle').onclick = async () => {
+  function saveThemePref(t){ themeStore.set(t); }
+  function toggleAppTheme(){
     const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
     const next = current === 'dark' ? 'light' : 'dark';
     applyTheme(next);
-    await saveTheme(next);
-  };
-
-  // ============ SAVED INDICATOR ============
-  const savedIndicator = document.getElementById('savedIndicator');
-  let savedFadeTimer = null;
-  function flashSaved(){
-    if(!savedIndicator) return;
-    savedIndicator.classList.add('show');
-    clearTimeout(savedFadeTimer);
-    savedFadeTimer = setTimeout(()=> savedIndicator.classList.remove('show'), 1400);
+    saveThemePref(next);
   }
+  document.getElementById('themeToggle').onclick = toggleAppTheme;
+  document.getElementById('authThemeToggle').onclick = toggleAppTheme;
 
   // ============ DATA MENU (export / import / wipe) ============
   const dataBtn = document.getElementById('dataBtn');
@@ -930,9 +1114,9 @@
       state.projects.forEach(migrateProject);
       if(parsed.theme){
         applyTheme(parsed.theme);
-        await saveTheme(parsed.theme);
+        saveThemePref(parsed.theme);
       }
-      await saveState();
+      await saveStateToCloud();
       render();
     }catch(err){
       console.error(err);
@@ -949,24 +1133,229 @@
     toggleMenu(false);
     const ok = await confirmModal({
       title: 'Borrar todos los datos',
-      body: 'Vas a eliminar <strong>todos tus proyectos y tareas</strong> de este navegador. Esta acción no se puede deshacer. Si quieres conservar un backup, exporta primero.',
+      body: 'Vas a eliminar <strong>todos tus proyectos y tareas</strong> de tu cuenta. Esta acción no se puede deshacer. Si quieres conservar un backup, exporta primero.',
       confirmText: 'Borrar todo',
       cancelText: 'Cancelar'
     });
     if(!ok) return;
     state.projects = [];
-    await saveState();
+    await saveStateToCloud();
     render();
   });
 
+  // ============ AUTH UI ============
+  const authScreen = document.getElementById('authScreen');
+  const appWrap = document.getElementById('appWrap');
+  const authForm = document.getElementById('authForm');
+  const authEmail = document.getElementById('authEmail');
+  const authPassword = document.getElementById('authPassword');
+  const authSubmit = document.getElementById('authSubmit');
+  const authError = document.getElementById('authError');
+  const authSuccess = document.getElementById('authSuccess');
+  const authTitle = document.getElementById('authTitle');
+  const authSub = document.getElementById('authSub');
+  const authSwitchText = document.getElementById('authSwitchText');
+  const authSwitchBtn = document.getElementById('authSwitchBtn');
+
+  let authMode = 'signin'; // 'signin' | 'signup'
+
+  function showAuthError(msg){
+    authSuccess.classList.remove('show');
+    authError.textContent = msg;
+    authError.classList.add('show');
+  }
+  function showAuthSuccess(msg){
+    authError.classList.remove('show');
+    authSuccess.textContent = msg;
+    authSuccess.classList.add('show');
+  }
+  function clearAuthMessages(){
+    authError.classList.remove('show');
+    authSuccess.classList.remove('show');
+  }
+
+  function setAuthMode(mode){
+    authMode = mode;
+    clearAuthMessages();
+    if(mode === 'signup'){
+      authTitle.innerHTML = 'Crear una <em>cuenta</em>.';
+      authSub.textContent = 'Regístrate para empezar a trackear tus proyectos. Solo necesitas un email y una contraseña.';
+      authSubmit.textContent = 'Crear cuenta';
+      authPassword.setAttribute('autocomplete', 'new-password');
+      authPassword.setAttribute('placeholder', 'Mínimo 6 caracteres');
+      authSwitchText.textContent = '¿Ya tienes cuenta?';
+      authSwitchBtn.textContent = 'Iniciar sesión';
+    } else {
+      authTitle.innerHTML = 'Bienvenido <em>de vuelta</em>.';
+      authSub.textContent = 'Inicia sesión para acceder a tus proyectos desde cualquier dispositivo.';
+      authSubmit.textContent = 'Iniciar sesión';
+      authPassword.setAttribute('autocomplete', 'current-password');
+      authPassword.setAttribute('placeholder', '••••••••');
+      authSwitchText.textContent = '¿No tienes cuenta?';
+      authSwitchBtn.textContent = 'Crear cuenta';
+    }
+    // Subtle pulse on the submit button so users notice it changed
+    authSubmit.style.transition = 'transform .2s';
+    authSubmit.style.transform = 'scale(1.04)';
+    setTimeout(()=> authSubmit.style.transform = '', 200);
+  }
+  authSwitchBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    setAuthMode(authMode === 'signin' ? 'signup' : 'signin');
+    // Visual feedback so it's obvious the click registered
+    authTitle.style.transition = 'opacity .15s';
+    authTitle.style.opacity = '0.3';
+    setTimeout(()=> authTitle.style.opacity = '1', 100);
+    authEmail.focus();
+  });
+
+  function translateAuthError(err){
+    const msg = (err && err.message) || String(err) || '';
+    const m = msg.toLowerCase();
+    if(m.includes('invalid login') || m.includes('invalid credentials')) return 'Email o contraseña incorrectos.';
+    if(m.includes('user already registered')) return 'Ya existe una cuenta con ese email. Prueba a iniciar sesión.';
+    if(m.includes('password should be at least')) return 'La contraseña debe tener al menos 6 caracteres.';
+    if(m.includes('unable to validate email') || m.includes('invalid email')) return 'El email no parece válido.';
+    if(m.includes('email not confirmed')) return 'Tu email aún no está confirmado. Revisa tu bandeja de entrada.';
+    if(m.includes('rate limit') || m.includes('too many')) return 'Demasiados intentos. Espera un momento y vuelve a intentarlo.';
+    if(m.includes('network') || m.includes('fetch')) return 'Problema de conexión. Comprueba tu internet.';
+    return msg || 'Algo ha fallado. Inténtalo de nuevo.';
+  }
+
+  authForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearAuthMessages();
+    const email = authEmail.value.trim();
+    const password = authPassword.value;
+    if(!email || !password){ showAuthError('Rellena email y contraseña.'); return; }
+    authSubmit.disabled = true;
+    const originalLabel = authSubmit.textContent;
+    authSubmit.textContent = authMode === 'signup' ? 'Creando…' : 'Entrando…';
+    try{
+      if(authMode === 'signup'){
+        const { data, error } = await supa.auth.signUp({ email, password });
+        if(error) throw error;
+        if(data.session){
+          // Auto sign-in (email confirmation off)
+          // onAuthStateChange handler will take over and show the app
+        } else {
+          // Email confirmation is on — user must confirm via email
+          showAuthSuccess('Cuenta creada. Revisa tu email para confirmarla antes de iniciar sesión.');
+          setAuthMode('signin');
+        }
+      } else {
+        const { error } = await supa.auth.signInWithPassword({ email, password });
+        if(error) throw error;
+        // onAuthStateChange handler will take over
+      }
+    }catch(err){
+      showAuthError(translateAuthError(err));
+    }finally{
+      authSubmit.disabled = false;
+      authSubmit.textContent = originalLabel;
+    }
+  });
+
+  // User chip / menu
+  const userChip = document.getElementById('userChip');
+  const userMenu = document.getElementById('userMenu');
+  const userAvatar = document.getElementById('userAvatar');
+  const userEmail = document.getElementById('userEmail');
+  const userMenuEmail = document.getElementById('userMenuEmail');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  userChip.addEventListener('click', (e) => {
+    e.stopPropagation();
+    userMenu.classList.toggle('show');
+  });
+  document.addEventListener('click', (e) => {
+    if(!userMenu.contains(e.target) && e.target !== userChip) userMenu.classList.remove('show');
+  });
+  logoutBtn.addEventListener('click', async () => {
+    userMenu.classList.remove('show');
+    const ok = await confirmModal({
+      title: 'Cerrar sesión',
+      body: '¿Seguro que quieres cerrar sesión? Tus datos están guardados en la nube; podrás recuperarlos cuando vuelvas a entrar.',
+      confirmText: 'Cerrar sesión',
+      cancelText: 'Cancelar'
+    });
+    if(!ok) return;
+    await supa.auth.signOut();
+  });
+
+  function showAuthScreen(){
+    authScreen.classList.add('show');
+    appWrap.style.display = 'none';
+    clearAuthMessages();
+    authEmail.value = '';
+    authPassword.value = '';
+    setTimeout(()=> authEmail.focus(), 60);
+  }
+  function showApp(){
+    authScreen.classList.remove('show');
+    appWrap.style.display = '';
+  }
+  function updateUserChip(){
+    if(!currentUser) return;
+    userEmail.textContent = currentUser.email || '';
+    userMenuEmail.textContent = currentUser.email || '';
+    userAvatar.textContent = (currentUser.email || '?').charAt(0).toUpperCase();
+  }
+
   // ============ INIT ============
   (async function init(){
-    // Apply theme as early as possible to minimize flash
-    const theme = await loadTheme();
-    applyTheme(theme);
-    renderDate();
-    await loadState();
-    render();
+    try {
+      // Apply theme and basic UI immediately so user sees something
+      applyTheme(loadTheme());
+      renderDate();
+      showAuthScreen();
+      setSyncStatus('', 'Conectando…');
+
+      // Now load the Supabase SDK (with CDN fallbacks)
+      const ok = await loadSupabaseSDK();
+      if(!ok){
+        showFatalError('No se pudo cargar el sistema de login. Esto pasa si: (1) estás viendo el archivo en una <strong>vista previa</strong> (como dentro de Claude) que bloquea scripts externos — súbelo a una web real (Netlify, Vercel, GitHub Pages) y funcionará. (2) Tienes un bloqueador de anuncios activo. (3) Tu red bloquea CDNs.');
+        setSyncStatus('error', 'SDK no disponible');
+        return;
+      }
+
+      // Create client now that SDK is loaded
+      supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth: { persistSession: true, autoRefreshToken: true }
+      });
+
+      // Wire auth state changes
+      supa.auth.onAuthStateChange(async (event, session) => {
+        if(session && session.user){
+          currentUser = { id: session.user.id, email: session.user.email };
+          updateUserChip();
+          showApp();
+          await loadStateFromCloud();
+          render();
+        } else {
+          currentUser = null;
+          state.projects = [];
+          render();
+          showAuthScreen();
+          setSyncStatus('', 'Sin sesión');
+        }
+      });
+
+      // Check for existing session
+      setSyncStatus('', 'Sin sesión');
+      const { data: { session } } = await supa.auth.getSession();
+      if(session && session.user){
+        currentUser = { id: session.user.id, email: session.user.email };
+        updateUserChip();
+        showApp();
+        await loadStateFromCloud();
+        render();
+      }
+    } catch(e){
+      console.error('Init error', e);
+      showAuthScreen();
+      setSyncStatus('error', 'Error de conexión');
+    }
   })();
 </script>
 </body>
