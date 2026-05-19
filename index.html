@@ -46,29 +46,149 @@
     --check-fg:#ffffff;
   }
   [data-theme="dark"]{
-    --bg:#0c0c0d;
-    --bg-card:#161618;
-    --bg-elev:#1f1f22;
-    --ink:#f4f4f5;
-    --ink-soft:#c2c2c6;
-    --ink-mute:#75757a;
-    --ink-faint:#3d3d42;
-    --line:#26262a;
-    --line-strong:#34343a;
-    --red:#f04848;
-    --orange:#f59343;
-    --green:#3dcd6c;
-    --shadow-sm:0 1px 2px rgba(0,0,0,.4);
-    --shadow:0 1px 3px rgba(0,0,0,.5),0 8px 24px rgba(0,0,0,.35);
-    --shadow-lg:0 4px 12px rgba(0,0,0,.55),0 24px 48px rgba(0,0,0,.4);
-    --bg-gradient-a:rgba(255,255,255,.04);
-    --bg-gradient-b:rgba(255,255,255,.025);
-    --thumb-bg:#f4f4f5;
-    --thumb-border:#161618;
-    --check-fg:#0c0c0d;
+    /* Base surfaces — 4 niveles de profundidad claros */
+    --bg:#0d0d0f;
+    --bg-card:#141416;
+    --bg-elev:#1c1c20;
+    --bg-raised:#242428;
+
+    /* Tipografía — más contraste, más legible */
+    --ink:#f0f0f2;
+    --ink-soft:#b8b8c0;
+    --ink-mute:#606068;
+    --ink-faint:#2e2e34;
+
+    /* Bordes — sutiles pero presentes */
+    --line:#222228;
+    --line-strong:#2e2e36;
+
+    /* Colores de acento — más vivos en oscuro */
+    --red:#ff5555;
+    --orange:#ff8c42;
+    --green:#3ecf6e;
+
+    /* Sombras — más pronunciadas para separar capas */
+    --shadow-sm:0 1px 3px rgba(0,0,0,.6);
+    --shadow:0 2px 8px rgba(0,0,0,.5),0 12px 32px rgba(0,0,0,.4);
+    --shadow-lg:0 8px 24px rgba(0,0,0,.6),0 32px 64px rgba(0,0,0,.5);
+
+    /* Gradiente de fondo sutil */
+    --bg-gradient-a:rgba(255,255,255,.022);
+    --bg-gradient-b:rgba(120,80,255,.04);
+
+    /* Controles */
+    --thumb-bg:#f0f0f2;
+    --thumb-border:#141416;
+    --check-fg:#0d0d0f;
+
+    /* Extras para oscuro */
+    --card-highlight:rgba(255,255,255,.032);
+    --card-border-top:rgba(255,255,255,.07);
   }
+
+  /* Tarjetas en oscuro: borde superior sutil tipo "glow" y gradiente interno */
+  [data-theme="dark"] .card{
+    background:linear-gradient(160deg, var(--bg-card) 0%, #111114 100%);
+    box-shadow:0 1px 0 var(--card-border-top) inset, var(--shadow);
+  }
+  [data-theme="dark"] .card:hover{
+    background:linear-gradient(160deg, #18181c 0%, #111114 100%);
+    box-shadow:0 1px 0 rgba(255,255,255,.1) inset, var(--shadow-lg);
+  }
+  [data-theme="dark"] .card::before{
+    opacity:1;
+  }
+
+  /* Tabs en oscuro: más distinción visual */
+  [data-theme="dark"] .tabs{
+    background:#0a0a0c;
+    border-color:#1e1e24;
+  }
+  [data-theme="dark"] .tab.active{
+    background:var(--ink);
+    color:#0d0d0f;
+    box-shadow:0 2px 8px rgba(0,0,0,.4);
+  }
+
+  /* Botón primary en oscuro */
+  [data-theme="dark"] .btn.primary{
+    box-shadow:0 2px 12px rgba(255,255,255,.06);
+  }
+
+  /* Barra de progreso en oscuro */
+  [data-theme="dark"] .progress-bar{
+    background:#1a1a1e;
+    border-color:#222228;
+  }
+
+  /* Slider track en oscuro */
+  [data-theme="dark"] input[type=range].slider::-webkit-slider-runnable-track{
+    background:#242428;
+  }
+  [data-theme="dark"] input[type=range].slider::-moz-range-track{
+    background:#242428;
+  }
+
+  /* Todo rows en oscuro */
+  [data-theme="dark"] .todo:hover{
+    background:#1e1e24;
+  }
+
+  /* Toggle de tareas en oscuro */
+  [data-theme="dark"] .todos-toggle:hover{
+    background:#1c1c22;
+  }
+  [data-theme="dark"] .todos-pill{
+    background:#1c1c20;
+    border-color:#2a2a30;
+  }
+
+  /* Step buttons en oscuro */
+  [data-theme="dark"] .step-btn{
+    background:#1c1c20;
+    border-color:#2a2a30;
+  }
+
+  /* Inputs en oscuro */
+  [data-theme="dark"] .todo-weight{
+    background:#1a1a1e;
+    border-color:#2a2a30;
+  }
+  [data-theme="dark"] .auth-field input{
+    background:#0a0a0c;
+    border-color:#2a2a30;
+  }
+  [data-theme="dark"] .auth-field input:focus{
+    border-color:#606068;
+    box-shadow:0 0 0 3px rgba(255,255,255,.05);
+  }
+
+  /* Auth card en oscuro */
+  [data-theme="dark"] .auth-card{
+    background:linear-gradient(160deg,#141416 0%,#0f0f12 100%);
+    box-shadow:0 1px 0 rgba(255,255,255,.06) inset, 0 32px 80px rgba(0,0,0,.7);
+    border-color:#222228;
+  }
+
+  /* Header en oscuro */
+  [data-theme="dark"] .header{
+    border-color:#1e1e24;
+  }
+
+  /* User menu en oscuro */
+  [data-theme="dark"] .user-menu{
+    background:#141416;
+    border-color:#2a2a30;
+    box-shadow:0 8px 32px rgba(0,0,0,.6);
+  }
+
+  /* Sync status dot en oscuro */
+  [data-theme="dark"] .sync-status{
+    color:#50505a;
+  }
+
   @media (prefers-color-scheme: dark){
-    html:not([data-theme="light"]){background:#0c0c0d}
+    html:not([data-theme="light"]){background:#0d0d0f}
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html{height:100%;-webkit-text-size-adjust:100%}
@@ -331,102 +451,176 @@
 
   /* RESPONSIVE — MOBILE */
   @media (max-width:640px){
-    body{padding:16px 12px 56px}
+    body{
+      padding:0;
+      padding-top:max(18px, env(safe-area-inset-top) + 12px);
+      padding-bottom:max(60px, env(safe-area-inset-bottom) + 48px);
+      padding-left:max(16px, env(safe-area-inset-left) + 12px);
+      padding-right:max(16px, env(safe-area-inset-right) + 12px);
+    }
 
-    /* HEADER becomes a clean stack */
-    .header{flex-direction:column;align-items:stretch;gap:18px;padding-bottom:22px;margin-bottom:22px}
-    .brand h1{font-size:30px;line-height:1}
-    .brand .eyebrow{font-size:10px}
-    .brand .date{font-size:11px}
+    .wrap{padding:0}
 
-    /* Stats row: 2 stats + theme + user, in one tidy row */
-    .header-stats{display:grid;grid-template-columns:1fr 1fr auto auto;gap:10px;align-items:center;width:100%}
-    .stat{text-align:left;min-width:0}
-    .stat-label{font-size:9px}
-    .stat-value{font-size:22px}
-    .stat-value sup{font-size:11px}
-    .theme-toggle{width:36px;height:36px;border-radius:9px}
+    /* ── HEADER ── */
+    .header{
+      flex-direction:column;
+      align-items:stretch;
+      gap:16px;
+      padding-bottom:18px;
+      margin-bottom:18px;
+    }
+    .brand h1{font-size:28px;line-height:1;letter-spacing:-.025em}
+    .brand .eyebrow{font-size:9.5px;letter-spacing:.2em}
+    .brand .date{font-size:11px;margin-top:2px}
+
+    /* Stats: 2 números a la izquierda, controles a la derecha */
+    .header-stats{
+      display:flex;
+      align-items:center;
+      gap:0;
+      width:100%;
+    }
+    .stat{
+      flex:1;
+      text-align:left;
+      min-width:0;
+    }
+    .stat + .stat{
+      padding-left:16px;
+      margin-left:16px;
+      border-left:1px solid var(--line);
+    }
+    .stat-label{font-size:9px;letter-spacing:.18em}
+    .stat-value{font-size:24px;line-height:1}
+    .stat-value sup{font-size:12px}
+
+    /* Theme + user chip: to the right */
+    .theme-toggle{
+      width:36px;height:36px;border-radius:10px;
+      margin-left:12px;flex-shrink:0;
+    }
     .theme-toggle svg{width:15px;height:15px}
-
-    /* User chip — only avatar visible on mobile to save space */
-    .user-chip{padding:5px;border-radius:99px}
+    .user-chip{padding:5px;border-radius:99px;margin-left:8px;flex-shrink:0}
     .user-chip .email{display:none}
-    .user-chip .avatar{width:26px;height:26px;font-size:11px}
+    .user-chip .avatar{width:28px;height:28px;font-size:11px}
     .user-menu{right:0;left:auto;min-width:240px}
 
-    /* Tabs full width, equal split */
-    .tabs{width:100%;margin-bottom:20px}
-    .tab{flex:1;text-align:center;font-size:13px;padding:10px}
+    /* ── TABS ── */
+    .tabs{
+      width:100%;
+      margin-bottom:16px;
+      border-radius:12px;
+      padding:3px;
+    }
+    .tab{flex:1;text-align:center;font-size:13.5px;font-weight:500;padding:10px 8px;border-radius:9px}
 
-    /* Toolbar: info above, controls below */
-    .toolbar{flex-direction:column;align-items:stretch;gap:12px;margin-bottom:18px}
-    .toolbar-left{order:2;text-align:center}
-    .toolbar-right{order:1;width:100%;justify-content:space-between;gap:10px}
-    .sync-status{font-size:9.5px}
-    #addProjectBtn{flex:1;justify-content:center;padding:11px 14px;font-size:13.5px}
+    /* ── TOOLBAR ── */
+    .toolbar{
+      flex-direction:row;
+      align-items:center;
+      gap:10px;
+      margin-bottom:14px;
+      flex-wrap:nowrap;
+    }
+    .toolbar-left{display:none} /* hidden on mobile — redundant with tabs */
+    .toolbar-right{width:100%;justify-content:space-between;gap:8px}
+    .sync-status{font-size:9px;gap:4px;flex-shrink:0}
+    .sync-status .sync-dot{width:5px;height:5px}
+    #addProjectBtn{
+      flex:1;
+      justify-content:center;
+      padding:11px 14px;
+      font-size:13.5px;
+      font-weight:600;
+      border-radius:10px;
+    }
 
-    /* Cards: single column, comfy padding */
-    .grid{grid-template-columns:1fr;gap:14px}
-    .card{padding:18px;gap:14px;border-radius:12px}
-    .card-title{font-size:20px}
-    .card-meta{font-size:10px}
-    .progress-value{font-size:30px}
-    .progress-value sup{font-size:13px}
-    .progress-label{font-size:9.5px}
+    /* ── CARDS ── */
+    .grid{grid-template-columns:1fr;gap:12px}
+    .card{
+      padding:20px 18px;
+      gap:16px;
+      border-radius:16px;
+    }
+    .card::before{height:2px}
+    .card-title{font-size:22px;letter-spacing:-.02em}
+    .card-meta{font-size:10px;margin-top:4px}
+    .card-actions{gap:0}
 
-    /* Slider: bigger touch target on phones */
-    .slider-row{gap:8px}
-    .step-btn{width:32px;height:32px;font-size:16px}
-    input[type=range].slider{height:32px}
-    input[type=range].slider::-webkit-slider-thumb{width:22px;height:22px;margin-top:-9px}
+    /* ── PROGRESS ── */
+    .progress-zone{gap:10px}
+    .progress-label{font-size:9px;letter-spacing:.18em}
+    .progress-value{font-size:36px;letter-spacing:-.025em}
+    .progress-value sup{font-size:15px}
+    .progress-bar{height:6px;border-radius:99px}
+
+    /* ── SLIDER ── */
+    .slider-row{gap:8px;margin-top:0}
+    .step-btn{
+      width:34px;height:34px;font-size:18px;
+      border-radius:9px;flex-shrink:0;
+    }
+    input[type=range].slider{height:34px}
+    input[type=range].slider::-webkit-slider-runnable-track{height:3px}
+    input[type=range].slider::-webkit-slider-thumb{width:22px;height:22px;margin-top:-10px}
     input[type=range].slider::-moz-range-thumb{width:22px;height:22px}
 
-    /* Todos: better touch targets */
-    .todo{padding:10px 6px 10px 4px;gap:8px}
-    .drag-handle{opacity:.35;width:22px;height:32px} /* always visible on touch screens */
-    .todo-check{width:20px;height:20px}
-    .todo-check:checked::after{left:5px;top:1px;width:6px;height:11px;border-width:0 2px 2px 0}
-    .todo-text{font-size:14px;line-height:1.4}
-    .todo-weight{font-size:11px;width:50px;padding:4px 6px}
-    .todo-del{opacity:1;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:18px;border-radius:6px}
-    .add-todo{padding:10px 12px;font-size:13px}
+    /* ── TODOS ── */
+    .todos{padding-top:14px;margin-top:2px}
+    .todos-toggle{padding:8px 4px;border-radius:10px}
+    .todos-label-text{font-size:9.5px}
+    .todos-pill{font-size:10px;padding:3px 10px}
+    .todo-list-wrap{gap:4px;padding-top:8px}
+    .todo{padding:10px 4px;gap:10px}
+    .drag-handle{opacity:.3;width:20px;height:28px}
+    .todo-check{width:20px;height:20px;border-radius:6px;flex-shrink:0}
+    .todo-check:checked::after{left:5px;top:1.5px;width:6px;height:10px;border-width:0 2px 2px 0}
+    .todo-text{font-size:14px;line-height:1.45}
+    .todo-weight{font-size:11px;width:46px;padding:4px 6px;border-radius:6px}
+    .todo-del{
+      opacity:1;width:30px;height:30px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:18px;border-radius:7px;
+      background:var(--bg-elev);
+    }
+    .add-todo{padding:10px 12px;font-size:13px;border-radius:9px;margin-top:4px}
+    .weight-info{font-size:9px;margin-top:4px}
 
-    /* Modal */
-    .modal{padding:22px;border-radius:12px;max-width:100%}
+    /* ── MODAL ── */
+    .modal{padding:24px 20px;border-radius:16px;max-width:100%}
     .modal-title{font-size:20px}
-    .modal-body{font-size:13.5px}
-    .modal-actions{flex-direction:column-reverse;gap:8px}
-    .modal-actions .btn{width:100%;justify-content:center;padding:12px}
+    .modal-body{font-size:13.5px;line-height:1.55}
+    .modal-actions{flex-direction:column-reverse;gap:8px;margin-top:20px}
+    .modal-actions .btn{width:100%;justify-content:center;padding:13px;font-size:14px;border-radius:10px}
 
-    /* Auth screen */
-    .auth-card{padding:32px 24px;border-radius:14px}
+    /* ── AUTH ── */
+    .auth-screen{padding:16px}
+    .auth-card{padding:32px 22px;border-radius:18px}
+    .auth-eyebrow{font-size:10px}
     .auth-title{font-size:30px}
-    .auth-sub{font-size:13px;margin-bottom:22px}
-    .auth-field input{padding:12px 13px;font-size:15px} /* 15px to prevent iOS zoom */
-    .auth-submit{padding:13px 16px;font-size:14.5px}
-    .auth-theme-corner{top:14px;right:14px}
+    .auth-sub{font-size:13px;margin-bottom:22px;line-height:1.55}
+    .auth-form{gap:12px}
+    .auth-field label{font-size:9.5px}
+    .auth-field input{padding:13px 14px;font-size:15px;border-radius:10px}
+    .auth-submit{padding:14px 16px;font-size:15px;border-radius:10px;margin-top:4px}
+    .auth-error,.auth-success{font-size:12.5px;border-radius:9px}
+    .auth-switch{margin-top:20px;font-size:13.5px}
+    .auth-theme-corner{top:16px;right:16px;width:34px;height:34px}
 
-    /* Historical bars: full-width readable */
-    .history-row{grid-template-columns:1fr;gap:6px}
-    .history-row .h-bar,.history-row .h-mini,.history-row .h-pct{grid-column:1/-1}
-    .history-row .h-pct{text-align:left}
-
-    /* Footer compact */
-    .footer{font-size:9px;margin-top:40px;padding-top:18px}
+    /* ── FOOTER ── */
+    .footer{font-size:9px;margin-top:36px;padding-top:16px;letter-spacing:.1em}
   }
 
-  /* RESPONSIVE — SMALL PHONES (iPhone SE etc) */
-  @media (max-width:380px){
-    body{padding:14px 10px 50px}
-    .brand h1{font-size:26px}
-    .stat-value{font-size:19px}
-    .card{padding:16px}
-    .card-title{font-size:18px}
-    .progress-value{font-size:26px}
-    .auth-card{padding:26px 20px}
+  /* RESPONSIVE — SMALL PHONES */
+  @media (max-width:390px){
+    .brand h1{font-size:25px}
+    .stat-value{font-size:21px}
+    .card{padding:18px 16px}
+    .card-title{font-size:20px}
+    .progress-value{font-size:32px}
+    .auth-card{padding:28px 18px}
     .auth-title{font-size:26px}
-    .header-stats{grid-template-columns:1fr 1fr auto auto;gap:8px}
-    .theme-toggle{width:34px;height:34px}
+    .step-btn{width:30px;height:30px;font-size:16px}
   }
 </style>
 </head>
