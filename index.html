@@ -165,6 +165,10 @@
   .step-btn{width:26px;height:26px;border:1px solid var(--line-strong);background:var(--bg-card);border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--ink-soft);display:flex;align-items:center;justify-content:center;transition:all .12s;line-height:1;padding:0}
   .step-btn:hover{background:var(--ink);color:var(--bg-card);border-color:var(--ink)}
   .step-btn:active{transform:scale(.92)}
+  .step-btn:disabled{opacity:.3;cursor:not-allowed;pointer-events:none}
+  .slider-auto .slider{opacity:.35;cursor:not-allowed}
+  .slider-auto .slider::-webkit-slider-thumb{cursor:not-allowed}
+  .slider-auto .slider::-moz-range-thumb{cursor:not-allowed}
 
   /* DRAG & DROP */
   .drag-handle{display:flex;align-items:center;justify-content:center;width:18px;height:24px;cursor:grab;flex-shrink:0;color:var(--ink-faint);opacity:0;transition:opacity .15s;touch-action:none;padding:0 2px}
@@ -958,6 +962,7 @@
     const progressLabel = mode === 'today'
       ? (auto !== null ? 'Progreso de hoy (auto)' : 'Progreso de hoy')
       : (auto !== null ? 'Progreso total (auto)' : 'Progreso total');
+    const isAuto = auto !== null;
     const todosLabel = mode === 'today' ? 'Tareas · hoy' : 'Tareas · histórico';
 
     card.innerHTML = `
@@ -978,14 +983,11 @@
           <span class="progress-value" style="color:${color}">${pct}<sup>%</sup></span>
         </div>
         <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div>
-        ${ auto === null ? `
-          <div class="slider-row">
-            <button class="step-btn" data-action="decr">−</button>
-            <input type="range" class="slider" min="0" max="100" step="1" value="${pct}">
-            <button class="step-btn" data-action="incr">+</button>
-          </div>
-        ` : `
-        `}
+        <div class="slider-row${isAuto ? ' slider-auto' : ''}">
+          <button class="step-btn" data-action="decr" ${isAuto ? 'disabled' : ''}>−</button>
+          <input type="range" class="slider" min="0" max="100" step="1" value="${pct}" ${isAuto ? 'disabled' : ''}>
+          <button class="step-btn" data-action="incr" ${isAuto ? 'disabled' : ''}>+</button>
+        </div>
       </div>
 
       <div class="todos">
