@@ -569,42 +569,17 @@
   }
 
   // ---- Loading & saving (cloud) ----
+  // Tracks whether we've completed our initial cloud load for the current user
+  let initialCloudLoadDone = false;
+
   async function loadStateFromCloud(){
-    if(!currentUser) return;
+    if(!currentUser || !supa) return;
     setSyncStatus('syncing', 'Cargando…');
-    try{
-      const { data, error } = await supa
-        .from('user_data')
-        .select('data')
-        .eq('user_id', currentUser.id)
-        .maybeSingle();
-      if(error) throw error;
-      if(data && data.data && Array.isArray(data.data.projects)){
-        state.projects = data.data.projects;
-        state.projects.forEach(migrateProject);
-      } else {
-        // First time for this user — try to upgrade from any local data they may have
-        const localRaw = localStore.get(STORAGE_KEY);
-        if(localRaw){
-          try{
-            const parsed = JSON.parse(localRaw);
-            if(Array.isArray(parsed.projects) && parsed.projects.length){
-              state.projects = parsed.projects;
-              state.projects.forEach(migrateProject);
-              await saveStateToCloud(); // push local data to their new cloud account
-            }
-          }catch(e){}
-        } else {
-          state.projects = [];
-        }
-      }
-      // Also cache locally for offline / fast reload
-      localStore.set(STORAGE_KEY, JSON.stringify({projects: state.projects}));
-      setSyncStatus('synced', 'Sincronizado');
-    }catch(e){
-      console.error('cloud load failed', e);
-      setSyncStatus('error', 'Sin conexión');
-      // Fall back to local cache
+
+    // Step 1: paint UI instantly from local cache so the user sees their data
+    //         even before the cloud responds. This kills the "blank on reload"
+    //         feeling. If the cloud says something different, we'll update.
+    if(!initialCloudLoadDone){
       const localRaw = localStore.get(STORAGE_KEY);
       if(localRaw){
         try{
@@ -612,11 +587,69 @@
           if(Array.isArray(parsed.projects)){
             state.projects = parsed.projects;
             state.projects.forEach(migrateProject);
+            render();
           }
         }catch(_){}
       }
     }
+
+    // Step 2: fetch the canonical data from the cloud
+    try{
+      const { data, error } = await supa
+        .from('user_data')
+        .select('data')
+        .eq('user_id', currentUser.id)
+        .maybeSingle();
+      if(error) throw error;
+
+      if(data && data.data && Array.isArray(data.data.projects)){
+        // Cloud has data — it's the source of truth
+        state.projects = data.data.projects;
+        state.projects.forEach(migrateProject);
+      } else if(!initialCloudLoadDone){
+        // No row in DB yet AND first time loading — upload any local data we have
+        const localRaw = localStore.get(STORAGE_KEY);
+        let localProjects = [];
+        if(localRaw){
+          try{
+            const parsed = JSON.parse(localRaw);
+            if(Array.isArray(parsed.projects)) localProjects = parsed.projects;
+          }catch(_){}
+        }
+        if(localProjects.length){
+          state.projects = localProjects;
+          state.projects.forEach(migrateProject);
+          await saveStateToCloud();
+        } else {
+          state.projects = [];
+        }
+      }
+      // else: cloud row exists but empty AND we already loaded once — leave state alone
+
+      localStore.set(STORAGE_KEY, JSON.stringify({projects: state.projects}));
+      setSyncStatus('synced', 'Sincronizado');
+      initialCloudLoadDone = true;
+    }catch(e){
+      console.error('cloud load failed', e);
+      setSyncStatus('error', 'Sin conexión');
+      // If we never managed an initial load, at least try to use local cache
+      if(!initialCloudLoadDone){
+        const localRaw = localStore.get(STORAGE_KEY);
+        if(localRaw){
+          try{
+            const parsed = JSON.parse(localRaw);
+            if(Array.isArray(parsed.projects)){
+              state.projects = parsed.projects;
+              state.projects.forEach(migrateProject);
+            }
+          }catch(_){}
+        }
+      }
+    }
   }
+
+  // Marker so realtime ignores echoes of our own writes
+  let lastWriteAt = 0;
 
   async function saveStateToCloud(opts){
     if(!currentUser || !supa) return false;
@@ -625,6 +658,7 @@
     const payload = { projects: state.projects };
     // Always cache locally first (instant offline persistence)
     localStore.set(STORAGE_KEY, JSON.stringify(payload));
+    lastWriteAt = Date.now();
 
     // Try up to 3 times with small backoff for flaky connections
     const attempts = 3;
@@ -638,6 +672,7 @@
             updated_at: new Date().toISOString()
           }, { onConflict: 'user_id' });
         if(error) throw error;
+        lastWriteAt = Date.now(); // refresh after successful write
         setSyncStatus('synced', 'Sincronizado');
         return true;
       }catch(e){
@@ -672,8 +707,12 @@
   });
   document.addEventListener('visibilitychange', () => {
     if(document.visibilityState === 'hidden'){
+      // Going away: flush local + push to cloud
       try{ localStore.set(STORAGE_KEY, JSON.stringify({projects: state.projects})); }catch(_){}
-      if(currentUser) saveStateToCloud(); // flush pending changes
+      if(currentUser && supa) saveStateToCloud({silent: true});
+    } else if(document.visibilityState === 'visible' && currentUser && supa){
+      // Coming back: refresh from cloud in case another device updated it
+      loadStateFromCloud().then(() => render());
     }
   });
 
@@ -1284,55 +1323,116 @@
     userAvatar.textContent = (currentUser.email || '?').charAt(0).toUpperCase();
   }
 
+  // ============ REALTIME SYNC (cross-device live updates) ============
+  let realtimeChannel = null;
+
+  function startRealtime(){
+    if(!supa || !currentUser) return;
+    stopRealtime();
+    realtimeChannel = supa
+      .channel('user_data_changes_' + currentUser.id)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'user_data',
+          filter: 'user_id=eq.' + currentUser.id
+        },
+        (payload) => {
+          // Ignore echoes of our own recent writes (within ~3 seconds)
+          if(Date.now() - lastWriteAt < 3000) return;
+          if(payload.new && payload.new.data && Array.isArray(payload.new.data.projects)){
+            state.projects = payload.new.data.projects;
+            state.projects.forEach(migrateProject);
+            localStore.set(STORAGE_KEY, JSON.stringify({projects: state.projects}));
+            render();
+            setSyncStatus('synced', 'Actualizado');
+          }
+        }
+      )
+      .subscribe();
+  }
+  function stopRealtime(){
+    if(realtimeChannel){
+      try{ supa.removeChannel(realtimeChannel); }catch(e){}
+      realtimeChannel = null;
+    }
+  }
+
   // ============ INIT ============
+  // Single source of truth: onAuthStateChange. We do NOT also call getSession()
+  // separately because that creates race conditions (two parallel loads
+  // stomping on each other and leaving the UI blank on reload).
+  let appReady = false;
+
+  function handleAuthSession(session){
+    if(session && session.user){
+      // Skip if it's the same user already loaded (avoid double-load on refresh)
+      if(currentUser && currentUser.id === session.user.id && appReady){
+        return;
+      }
+      currentUser = { id: session.user.id, email: session.user.email };
+      updateUserChip();
+      showApp();
+      initialCloudLoadDone = false;
+      loadStateFromCloud().then(() => {
+        render();
+        appReady = true;
+        startRealtime();
+      });
+    } else {
+      stopRealtime();
+      currentUser = null;
+      initialCloudLoadDone = false;
+      state.projects = [];
+      render();
+      showAuthScreen();
+      setSyncStatus('', 'Sin sesión');
+      appReady = false;
+    }
+  }
+
   (async function init(){
     try {
-      // Apply theme and basic UI immediately so user sees something
+      // Apply theme and basic UI immediately
       applyTheme(loadTheme());
       renderDate();
       showAuthScreen();
       setSyncStatus('', 'Conectando…');
 
-      // Now load the Supabase SDK (with CDN fallbacks)
-      const ok = await loadSupabaseSDK();
-      if(!ok){
-        showFatalError('No se pudo cargar el sistema de login. Esto pasa si: (1) estás viendo el archivo en una <strong>vista previa</strong> (como dentro de Claude) que bloquea scripts externos — súbelo a una web real (Netlify, Vercel, GitHub Pages) y funcionará. (2) Tienes un bloqueador de anuncios activo. (3) Tu red bloquea CDNs.');
+      // Load the Supabase SDK
+      const sdkLoaded = await loadSupabaseSDK();
+      if(!sdkLoaded){
+        showFatalError('No se pudo cargar el sistema de login. Comprueba tu conexión a internet, desactiva bloqueadores de anuncios o revisa si tu red bloquea unpkg.com.');
         setSyncStatus('error', 'SDK no disponible');
         return;
       }
 
-      // Create client now that SDK is loaded
+      // Create the Supabase client
       supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-        auth: { persistSession: true, autoRefreshToken: true }
-      });
-
-      // Wire auth state changes
-      supa.auth.onAuthStateChange(async (event, session) => {
-        if(session && session.user){
-          currentUser = { id: session.user.id, email: session.user.email };
-          updateUserChip();
-          showApp();
-          await loadStateFromCloud();
-          render();
-        } else {
-          currentUser = null;
-          state.projects = [];
-          render();
-          showAuthScreen();
-          setSyncStatus('', 'Sin sesión');
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: false
         }
       });
 
-      // Check for existing session
-      setSyncStatus('', 'Sin sesión');
-      const { data: { session } } = await supa.auth.getSession();
-      if(session && session.user){
-        currentUser = { id: session.user.id, email: session.user.email };
-        updateUserChip();
-        showApp();
-        await loadStateFromCloud();
-        render();
-      }
+      // Wire the SINGLE auth handler. Supabase fires this once on startup
+      // with the persisted session (event: INITIAL_SESSION), and again on
+      // sign-in / sign-out. That's all we need — no manual getSession().
+      supa.auth.onAuthStateChange((event, session) => {
+        handleAuthSession(session);
+      });
+
+      // Safety net: if Supabase never fires onAuthStateChange (rare network issue),
+      // unblock the UI after 4 seconds so the user can interact with the login screen.
+      setTimeout(() => {
+        if(!currentUser){
+          setSyncStatus('', 'Sin sesión');
+        }
+      }, 4000);
+
     } catch(e){
       console.error('Init error', e);
       showAuthScreen();
