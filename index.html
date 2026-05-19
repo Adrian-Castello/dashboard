@@ -3,10 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0c0c0d" media="(prefers-color-scheme: dark)">
+
+<!-- PWA / iOS App -->
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tracker">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Project Tracker">
+<meta name="theme-color" content="#0a0a0a">
+
+<!-- App icon para iOS (generado inline como SVG→PNG via canvas) -->
+<link rel="apple-touch-icon" id="appleTouchIcon">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230a0a0a'/%3E%3Ctext y='72' x='50' text-anchor='middle' font-size='62' font-family='Georgia,serif' fill='white'%3ET%3C/text%3E%3C/svg%3E">
+
 <title>Project Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,9 +70,10 @@
   @media (prefers-color-scheme: dark){
     html:not([data-theme="light"]){background:#0c0c0d}
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{background:var(--bg);color:var(--ink);font-family:'Inter Tight',sans-serif;font-feature-settings:"ss01","cv11";-webkit-font-smoothing:antialiased;transition:background-color .25s ease,color .25s ease}
-  body{min-height:100vh;padding:32px 24px 80px;background-image:radial-gradient(circle at 20% 0%,var(--bg-gradient-a),transparent 50%),radial-gradient(circle at 80% 100%,var(--bg-gradient-b),transparent 50%)}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html{height:100%;-webkit-text-size-adjust:100%}
+  html,body{background:var(--bg);color:var(--ink);font-family:'Inter Tight',sans-serif;font-feature-settings:"ss01","cv11";-webkit-font-smoothing:antialiased;transition:background-color .25s ease,color .25s ease;overscroll-behavior:none}
+  body{min-height:100vh;min-height:100dvh;padding:32px 24px 80px;padding-top:max(32px, env(safe-area-inset-top) + 16px);padding-bottom:max(80px, env(safe-area-inset-bottom) + 60px);padding-left:max(24px, env(safe-area-inset-left) + 16px);padding-right:max(24px, env(safe-area-inset-right) + 16px);background-image:radial-gradient(circle at 20% 0%,var(--bg-gradient-a),transparent 50%),radial-gradient(circle at 80% 100%,var(--bg-gradient-b),transparent 50%)}
 
   .wrap{max-width:1180px;margin:0 auto}
 
@@ -156,14 +166,32 @@
   .step-btn:hover{background:var(--ink);color:var(--bg-card);border-color:var(--ink)}
   .step-btn:active{transform:scale(.92)}
 
+  /* DRAG & DROP */
+  .drag-handle{display:flex;align-items:center;justify-content:center;width:18px;height:24px;cursor:grab;flex-shrink:0;color:var(--ink-faint);opacity:0;transition:opacity .15s;touch-action:none;padding:0 2px}
+  .drag-handle:active{cursor:grabbing}
+  .drag-handle svg{width:12px;height:12px;pointer-events:none}
+  .todo:hover .drag-handle{opacity:1}
+
+  /* Estado mientras se arrastra UNA TAREA */
+  .todo.dragging{opacity:0;pointer-events:none}
+  .todo.drag-over{background:var(--bg-elev);box-shadow:inset 0 2px 0 var(--ink-faint)}
+
+  /* DRAG DE PROYECTOS */
+  .card.dragging-card{opacity:0;pointer-events:none}
+  .card.drag-over-card{box-shadow:0 0 0 2px var(--ink),var(--shadow-lg);transform:translateY(-1px)}
+
+  /* Ghost visual mientras arrastras (solo desktop, en móvil el touch usa clone) */
+  .drag-ghost{position:fixed;pointer-events:none;z-index:9999;opacity:.85;transform:rotate(1.5deg) scale(1.02);box-shadow:var(--shadow-lg);border-radius:var(--radius);background:var(--bg-card);border:1px solid var(--line-strong);padding:10px 14px;font-family:'Inter Tight',sans-serif;font-size:13.5px;color:var(--ink);max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
   /* TODOS */
   .todos{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:16px;margin-top:4px}
   .todos-head{display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:4px}
   .todos-count{color:var(--ink)}
 
-  .todo{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 4px;border-radius:7px;transition:background .12s;group:relative}
+  .todo{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 4px;border-radius:7px;transition:background .12s,box-shadow .12s;position:relative}
   .todo:hover{background:var(--bg-elev)}
   .todo:hover .todo-del{opacity:1}
+  .todo:hover .drag-handle{opacity:1}
 
   .todo-check{appearance:none;-webkit-appearance:none;width:17px;height:17px;border:1.5px solid var(--ink-faint);border-radius:5px;cursor:pointer;position:relative;flex-shrink:0;transition:all .15s;background:var(--bg-card)}
   .todo-check:hover{border-color:var(--ink-soft)}
@@ -343,6 +371,7 @@
 
     /* Todos: better touch targets */
     .todo{padding:10px 6px 10px 4px;gap:8px}
+    .drag-handle{opacity:.35;width:22px;height:32px} /* always visible on touch screens */
     .todo-check{width:20px;height:20px}
     .todo-check:checked::after{left:5px;top:1px;width:6px;height:11px;border-width:0 2px 2px 0}
     .todo-text{font-size:14px;line-height:1.4}
@@ -1008,7 +1037,7 @@
 
     // Todos (only from the active list — completely independent per view)
     const todoListEl = card.querySelector('.todo-list');
-    list.forEach(t => todoListEl.appendChild(buildTodo(p, t, mode, list)));
+    list.forEach(t => todoListEl.appendChild(buildTodo(p, t, mode, list, todoListEl)));
 
     card.querySelector('[data-action="add-todo"]').onclick = () => {
       list.push(newTodo());
@@ -1023,22 +1052,33 @@
       },20);
     };
 
+    // Wire card-level drag (drag by the card header to reorder projects)
+    initCardDrag(card, p);
+
     return card;
   }
 
-  function buildTodo(p, t, mode, list){
+  function buildTodo(p, t, mode, list, todoListEl){
     const row = document.createElement('div');
     row.className = 'todo' + (t.done ? ' done' : '');
+    row.dataset.id = t.id;
     row.innerHTML = `
+      <span class="drag-handle" title="Arrastrar para reordenar">
+        <svg viewBox="0 0 16 16" fill="none"><circle cx="5" cy="4" r="1.2" fill="currentColor"/><circle cx="11" cy="4" r="1.2" fill="currentColor"/><circle cx="5" cy="8" r="1.2" fill="currentColor"/><circle cx="11" cy="8" r="1.2" fill="currentColor"/><circle cx="5" cy="12" r="1.2" fill="currentColor"/><circle cx="11" cy="12" r="1.2" fill="currentColor"/></svg>
+      </span>
       <input type="checkbox" class="todo-check" ${t.done?'checked':''}>
       <span class="todo-text" contenteditable="plaintext-only" data-placeholder="Descripción de la tarea…">${escapeHtml(t.text)}</span>
       <input type="text" class="todo-weight" value="${t.weight}%" inputmode="numeric" title="Peso de esta tarea sobre 100">
       <button class="todo-del" title="Eliminar tarea">×</button>
     `;
+    const handle = row.querySelector('.drag-handle');
     const check = row.querySelector('.todo-check');
     const text = row.querySelector('.todo-text');
     const weight = row.querySelector('.todo-weight');
     const del = row.querySelector('.todo-del');
+
+    // Wire drag
+    if(todoListEl) initTodoDrag(handle, row, p, t, mode, list, todoListEl);
 
     check.addEventListener('change', ()=>{
       t.done = check.checked;
@@ -1108,6 +1148,274 @@
     if(e.key === 'Escape') closeModal(false);
     if(e.key === 'Enter') closeModal(true);
   });
+
+  // ============ DRAG & DROP ============
+  // Unified drag system for todos (and cards in the grid).
+  // Works on both desktop (mouse) and mobile/iPhone (touch).
+  // We implement our own touch-based DnD because HTML5 drag API
+  // doesn't fire on iOS Safari.
+
+  let dragState = null;
+  // dragState: { type:'todo'|'card', item, list, p, ghost, startIndex,
+  //              startX, startY, lastOver }
+
+  // --- Shared helpers ---
+  function createGhost(text){
+    const g = document.createElement('div');
+    g.className = 'drag-ghost';
+    g.textContent = text;
+    document.body.appendChild(g);
+    return g;
+  }
+  function moveGhost(g, x, y){
+    g.style.left = (x + 14) + 'px';
+    g.style.top  = (y - 18) + 'px';
+  }
+  function removeGhost(g){
+    if(g && g.parentNode) g.parentNode.removeChild(g);
+  }
+  function clearDragClasses(){
+    document.querySelectorAll('.dragging,.drag-over,.dragging-card,.drag-over-card').forEach(el=>{
+      el.classList.remove('dragging','drag-over','dragging-card','drag-over-card');
+    });
+  }
+
+  function getOrderedTodoEls(container){
+    return Array.from(container.querySelectorAll('.todo'));
+  }
+  function getOrderedCardEls(){
+    return Array.from(document.querySelectorAll('#grid .card'));
+  }
+
+  // Find which todo/card el the pointer is over, excluding the dragged one
+  function elAtPoint(x, y, els, excluded){
+    for(const el of els){
+      if(el === excluded) continue;
+      const r = el.getBoundingClientRect();
+      if(x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) return el;
+    }
+    return null;
+  }
+
+  // Insert dragged item before/after target based on pointer midpoint
+  function getInsertPosition(targetEl, y){
+    const r = targetEl.getBoundingClientRect();
+    return y < r.top + r.height/2 ? 'before' : 'after';
+  }
+
+  // Reorder an array: move item from fromIdx to toIdx
+  function reorder(arr, fromIdx, toIdx){
+    const item = arr.splice(fromIdx, 1)[0];
+    arr.splice(toIdx, 0, item);
+  }
+
+  // --- TODO DRAG ---
+  function initTodoDrag(handle, row, p, t, mode, list, todoListEl){
+    // MOUSE
+    handle.addEventListener('mousedown', e => {
+      if(e.button !== 0) return;
+      e.preventDefault();
+      const ghost = createGhost(t.text || 'Tarea');
+      moveGhost(ghost, e.clientX, e.clientY);
+      row.classList.add('dragging');
+      dragState = { type:'todo', item:row, t, list, p, mode, ghost,
+                    container: todoListEl, startX: e.clientX, startY: e.clientY, lastOver: null };
+
+      function onMove(e){
+        moveGhost(ghost, e.clientX, e.clientY);
+        const els = getOrderedTodoEls(todoListEl);
+        const over = elAtPoint(e.clientX, e.clientY, els, row);
+        if(over !== dragState.lastOver){
+          document.querySelectorAll('.todo.drag-over').forEach(x=>x.classList.remove('drag-over'));
+          if(over) over.classList.add('drag-over');
+          dragState.lastOver = over;
+        }
+      }
+      function onUp(e){
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        commitTodoDrop(e.clientX, e.clientY);
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+
+    // TOUCH (iOS Safari)
+    handle.addEventListener('touchstart', e => {
+      const touch = e.touches[0];
+      const ghost = createGhost(t.text || 'Tarea');
+      moveGhost(ghost, touch.clientX, touch.clientY);
+      row.classList.add('dragging');
+      dragState = { type:'todo', item:row, t, list, p, mode, ghost,
+                    container: todoListEl, startX: touch.clientX, startY: touch.clientY, lastOver: null };
+      e.preventDefault(); // block scroll while dragging
+    }, { passive: false });
+
+    handle.addEventListener('touchmove', e => {
+      if(!dragState || dragState.type !== 'todo') return;
+      const touch = e.touches[0];
+      moveGhost(dragState.ghost, touch.clientX, touch.clientY);
+      const els = getOrderedTodoEls(dragState.container);
+      const over = elAtPoint(touch.clientX, touch.clientY, els, row);
+      if(over !== dragState.lastOver){
+        document.querySelectorAll('.todo.drag-over').forEach(x=>x.classList.remove('drag-over'));
+        if(over) over.classList.add('drag-over');
+        dragState.lastOver = over;
+      }
+      e.preventDefault();
+    }, { passive: false });
+
+    handle.addEventListener('touchend', e => {
+      if(!dragState || dragState.type !== 'todo') return;
+      const touch = e.changedTouches[0];
+      commitTodoDrop(touch.clientX, touch.clientY);
+    });
+  }
+
+  function commitTodoDrop(x, y){
+    if(!dragState || dragState.type !== 'todo'){ clearDragState(); return; }
+    const { list, t, p, mode, container } = dragState;
+    const els = getOrderedTodoEls(container);
+    const over = elAtPoint(x, y, els, dragState.item);
+    if(over){
+      const pos = getInsertPosition(over, y);
+      const fromIdx = list.findIndex(x => x.id === t.id);
+      const toTid = over.dataset.id;
+      let toIdx = list.findIndex(x => x.id === toTid);
+      if(fromIdx !== -1 && toIdx !== -1 && fromIdx !== toIdx){
+        if(pos === 'after') toIdx = Math.min(toIdx + 1, list.length - 1);
+        if(pos === 'after' && toIdx > fromIdx) toIdx--;
+        if(pos === 'before' && toIdx > fromIdx) toIdx = Math.max(0, toIdx - 1);
+        // Simpler: just use splice based on visual order
+        const fromEl = dragState.item;
+        const visualIds = els.map(el=>el.dataset.id);
+        const vFrom = visualIds.indexOf(t.id);
+        let vTo = visualIds.indexOf(toTid);
+        if(pos === 'after') vTo++;
+        if(vFrom !== -1 && vTo !== vFrom){
+          const item = list.splice(fromIdx, 1)[0];
+          const newToIdx = list.findIndex(x=>x.id === visualIds[vTo >= visualIds.length ? visualIds.length-1 : vTo]);
+          const insertAt = newToIdx === -1 ? list.length : (pos === 'after' ? newToIdx + 1 : newToIdx);
+          list.splice(Math.min(insertAt, list.length), 0, item);
+        }
+        scheduleSave();
+        render();
+      }
+    }
+    clearDragState();
+  }
+
+  // --- CARD DRAG ---
+  function initCardDrag(card, p){
+    // We use the card header as the drag handle for projects
+    const handle = card.querySelector('.card-head');
+    if(!handle) return;
+    handle.style.cursor = 'grab';
+
+    function doCardDrag(getXY, onMove, onEnd){
+      const {x, y} = getXY();
+      const ghost = createGhost(p.name || 'Proyecto');
+      moveGhost(ghost, x, y);
+      card.classList.add('dragging-card');
+      dragState = { type:'card', item:card, p, ghost, lastOver:null };
+
+      const mvClean = onMove(ghost);
+      const endClean = onEnd(ghost);
+      return { mvClean, endClean };
+    }
+
+    // MOUSE
+    handle.addEventListener('mousedown', e => {
+      // Don't drag if clicking on a button or input inside the head
+      if(e.target.closest('button,input,[contenteditable]')) return;
+      if(e.button !== 0) return;
+      e.preventDefault();
+
+      const ghost = createGhost(p.name || 'Proyecto');
+      moveGhost(ghost, e.clientX, e.clientY);
+      card.classList.add('dragging-card');
+      dragState = { type:'card', item:card, p, ghost, lastOver:null };
+
+      function onMove(e){
+        moveGhost(ghost, e.clientX, e.clientY);
+        const els = getOrderedCardEls();
+        const over = elAtPoint(e.clientX, e.clientY, els, card);
+        if(over !== dragState.lastOver){
+          document.querySelectorAll('.card.drag-over-card').forEach(x=>x.classList.remove('drag-over-card'));
+          if(over) over.classList.add('drag-over-card');
+          dragState.lastOver = over;
+        }
+      }
+      function onUp(e){
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        commitCardDrop(e.clientX, e.clientY);
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+
+    // TOUCH
+    handle.addEventListener('touchstart', e => {
+      if(e.target.closest('button,input,[contenteditable]')) return;
+      const touch = e.touches[0];
+      const ghost = createGhost(p.name || 'Proyecto');
+      moveGhost(ghost, touch.clientX, touch.clientY);
+      card.classList.add('dragging-card');
+      dragState = { type:'card', item:card, p, ghost, lastOver:null };
+      e.preventDefault();
+    }, { passive: false });
+
+    handle.addEventListener('touchmove', e => {
+      if(!dragState || dragState.type !== 'card') return;
+      const touch = e.touches[0];
+      moveGhost(dragState.ghost, touch.clientX, touch.clientY);
+      const els = getOrderedCardEls();
+      const over = elAtPoint(touch.clientX, touch.clientY, els, card);
+      if(over !== dragState.lastOver){
+        document.querySelectorAll('.card.drag-over-card').forEach(x=>x.classList.remove('drag-over-card'));
+        if(over) over.classList.add('drag-over-card');
+        dragState.lastOver = over;
+      }
+      e.preventDefault();
+    }, { passive: false });
+
+    handle.addEventListener('touchend', e => {
+      if(!dragState || dragState.type !== 'card') return;
+      const touch = e.changedTouches[0];
+      commitCardDrop(touch.clientX, touch.clientY);
+    });
+  }
+
+  function commitCardDrop(x, y){
+    if(!dragState || dragState.type !== 'card'){ clearDragState(); return; }
+    const { p, item } = dragState;
+    const els = getOrderedCardEls();
+    const over = elAtPoint(x, y, els, item);
+    if(over){
+      const pos = getInsertPosition(over, y);
+      const overId = over.dataset.id;
+      const fromIdx = state.projects.findIndex(pr => pr.id === p.id);
+      let toIdx = state.projects.findIndex(pr => pr.id === overId);
+      if(fromIdx !== -1 && toIdx !== -1 && fromIdx !== toIdx){
+        const project = state.projects.splice(fromIdx, 1)[0];
+        const newTo = state.projects.findIndex(pr => pr.id === overId);
+        const insertAt = pos === 'after' ? newTo + 1 : newTo;
+        state.projects.splice(Math.max(0, Math.min(insertAt, state.projects.length)), 0, project);
+        scheduleSave();
+        render();
+      }
+    }
+    clearDragState();
+  }
+
+  function clearDragState(){
+    if(dragState){
+      clearDragClasses();
+      removeGhost(dragState.ghost);
+    }
+    dragState = null;
+  }
 
   // ============ ACTIONS ============
   function addProject(){
@@ -1392,6 +1700,37 @@
       appReady = false;
     }
   }
+
+  // ============ PWA ICON (generated via canvas, no external file needed) ============
+  (function generateIcon(){
+    try{
+      const size = 180;
+      const c = document.createElement('canvas');
+      c.width = c.height = size;
+      const ctx = c.getContext('2d');
+      // Background: rounded square (iOS clips it, Android uses it as-is)
+      const r = 38;
+      ctx.beginPath();
+      ctx.moveTo(r, 0); ctx.lineTo(size-r, 0);
+      ctx.quadraticCurveTo(size, 0, size, r);
+      ctx.lineTo(size, size-r);
+      ctx.quadraticCurveTo(size, size, size-r, size);
+      ctx.lineTo(r, size); ctx.quadraticCurveTo(0, size, 0, size-r);
+      ctx.lineTo(0, r); ctx.quadraticCurveTo(0, 0, r, 0);
+      ctx.closePath();
+      ctx.fillStyle = '#0a0a0a';
+      ctx.fill();
+      // Letter T in white serif
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 108px Georgia, serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('T', size/2, size/2 + 4);
+      const iconUrl = c.toDataURL('image/png');
+      const link = document.getElementById('appleTouchIcon');
+      if(link) link.href = iconUrl;
+    }catch(e){}
+  })();
 
   (async function init(){
     try {
