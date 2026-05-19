@@ -184,9 +184,17 @@
   .drag-ghost{position:fixed;pointer-events:none;z-index:9999;opacity:.85;transform:rotate(1.5deg) scale(1.02);box-shadow:var(--shadow-lg);border-radius:var(--radius);background:var(--bg-card);border:1px solid var(--line-strong);padding:10px 14px;font-family:'Inter Tight',sans-serif;font-size:13.5px;color:var(--ink);max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
   /* TODOS */
-  .todos{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:16px;margin-top:4px}
-  .todos-head{display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:4px}
-  .todos-count{color:var(--ink)}
+  .todos{display:flex;flex-direction:column;border-top:1px solid var(--line);padding-top:14px;margin-top:4px;gap:0}
+  .todos-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;background:transparent;border:none;cursor:pointer;padding:6px 4px;border-radius:8px;transition:background .12s;gap:10px;text-align:left}
+  .todos-toggle:hover{background:var(--bg-elev)}
+  .todos-summary{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+  .todos-label-text{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);white-space:nowrap}
+  .todos-pill{display:inline-flex;align-items:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-soft);background:var(--bg-elev);border:1px solid var(--line);border-radius:99px;padding:2px 9px;letter-spacing:.02em;white-space:nowrap}
+  .pill-done{color:var(--green)}
+  .todos-chevron{display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--ink-mute)}
+  .todos-chevron svg{width:14px;height:14px;transition:transform .2s cubic-bezier(.4,1.4,.5,1)}
+  .todos-toggle.expanded .todos-chevron svg{transform:rotate(180deg)}
+  .todo-list-wrap{display:flex;flex-direction:column;gap:6px;padding-top:10px}
 
   .todo{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 4px;border-radius:7px;transition:background .12s,box-shadow .12s;position:relative}
   .todo:hover{background:var(--bg-elev)}
@@ -977,18 +985,29 @@
             <button class="step-btn" data-action="incr">+</button>
           </div>
         ` : `
-          <div class="weight-info">calculado automáticamente desde las tareas</div>
         `}
       </div>
 
       <div class="todos">
-        <div class="todos-head">
-          <span>${todosLabel}</span>
-          <span class="todos-count">${list.filter(t=>t.done).length}/${list.length}</span>
+        <button class="todos-toggle" data-action="toggle-todos" aria-expanded="false">
+          <div class="todos-summary">
+            <span class="todos-label-text">${todosLabel}</span>
+            <span class="todos-pill">
+              ${ list.filter(t=>t.done).length === list.length && list.length > 0
+                ? `<span class="pill-done">✓ Todo completado</span>`
+                : `<span>${list.filter(t=>t.done).length}/${list.length} completadas</span>`
+              }
+            </span>
+          </div>
+          <span class="todos-chevron">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg>
+          </span>
+        </button>
+        <div class="todo-list-wrap" style="display:none">
+          <div class="todo-list"></div>
+          <button class="add-todo" data-action="add-todo"><span>+</span> Añadir tarea</button>
+          ${ weightStatus ? `<div class="weight-info ${weightClass}">${weightStatus}</div>` : '' }
         </div>
-        <div class="todo-list"></div>
-        <button class="add-todo" data-action="add-todo"><span>+</span> Añadir tarea</button>
-        ${ weightStatus ? `<div class="weight-info ${weightClass}">${weightStatus}</div>` : '' }
       </div>
     `;
 
@@ -1034,6 +1053,23 @@
       card.querySelector('[data-action="incr"]').onclick = () => setPct((+slider.value)+1);
       card.querySelector('[data-action="decr"]').onclick = () => setPct((+slider.value)-1);
     }
+
+    // Todos toggle (expand/collapse)
+    const todosToggle = card.querySelector('[data-action="toggle-todos"]');
+    const todoListWrap = card.querySelector('.todo-list-wrap');
+    // Restore expanded state from project (persists while card is alive)
+    if(p._todosExpanded){
+      todoListWrap.style.display = '';
+      todosToggle.setAttribute('aria-expanded','true');
+      todosToggle.classList.add('expanded');
+    }
+    todosToggle.addEventListener('click', () => {
+      const isOpen = todoListWrap.style.display !== 'none';
+      todoListWrap.style.display = isOpen ? 'none' : '';
+      todosToggle.setAttribute('aria-expanded', String(!isOpen));
+      todosToggle.classList.toggle('expanded', !isOpen);
+      p._todosExpanded = !isOpen;
+    });
 
     // Todos (only from the active list — completely independent per view)
     const todoListEl = card.querySelector('.todo-list');
