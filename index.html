@@ -823,8 +823,10 @@
     if(p.todayDate !== today){
       p.todayDate = today;
       p.todayProgress = 0;
-      // Today is a fresh slate: wipe today's list entirely
-      p.todosToday = [];
+      // New day: keep the tasks but uncheck them all so user starts fresh
+      if(Array.isArray(p.todosToday)){
+        p.todosToday.forEach(t => { t.done = false; });
+      }
     }
   }
 
