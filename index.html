@@ -81,7 +81,7 @@
   }
   [data-theme="dark"] .card{
     background:#111111;
-    border-color:#1f1f1f;
+    border:2px solid #ebebeb;
     box-shadow:
       0 0 0 1px rgba(255,255,255,.04) inset,
       0 1px 0 rgba(255,255,255,.07) inset,
@@ -90,7 +90,7 @@
   }
   [data-theme="dark"] .card:hover{
     background:#151515;
-    border-color:#282828;
+    border-color:#fff;
     box-shadow:
       0 0 0 1px rgba(255,255,255,.06) inset,
       0 1px 0 rgba(255,255,255,.09) inset,
@@ -98,7 +98,7 @@
       0 2px 6px rgba(0,0,0,.5);
     transform:translateY(-3px);
   }
-  [data-theme="dark"] .card::before{opacity:.9;height:2px}
+  [data-theme="dark"] .card::before{display:none}
   [data-theme="dark"] .tabs{background:#0a0a0a;border-color:#1a1a1a}
   [data-theme="dark"] .tab{color:#3a3a3a}
   [data-theme="dark"] .tab:hover:not(.active){color:#666;background:rgba(255,255,255,.03)}
@@ -154,7 +154,160 @@
   [data-theme="dark"] .sync-status{color:#2e2e2e}
   [data-theme="dark"] .footer{color:#242424}
   @media (prefers-color-scheme:dark){html:not([data-theme="light"]){background:#080808}}
+
+  /* ══ WARM THEME (beige / marrón) ════════════════════════════ */
+  [data-theme="warm"]{
+    --bg:#f2e8d9;
+    --bg-card:#faf4ea;
+    --bg-elev:#e8dcc8;
+    --ink:#2c1a0e;
+    --ink-soft:#5c3d22;
+    --ink-mute:#9a7a5a;
+    --ink-faint:#c8aa88;
+    --line:#ddd0ba;
+    --line-strong:#c8b898;
+    --red:#c0392b;
+    --orange:#d4691e;
+    --green:#2d7d46;
+    --shadow-sm:0 1px 3px rgba(80,40,10,.08);
+    --shadow:0 2px 8px rgba(80,40,10,.1),0 8px 24px rgba(80,40,10,.07);
+    --shadow-lg:0 4px 16px rgba(80,40,10,.12),0 24px 48px rgba(80,40,10,.1);
+    --bg-gradient-a:rgba(180,120,60,.06);
+    --bg-gradient-b:rgba(180,120,60,.04);
+    --thumb-bg:#5c3d22;
+    --thumb-border:#faf4ea;
+    --check-fg:#faf4ea;
   }
+  [data-theme="warm"] body{
+    background-image:
+      radial-gradient(ellipse 70% 50% at 20% 0%,rgba(200,150,80,.12),transparent),
+      radial-gradient(ellipse 60% 40% at 80% 100%,rgba(160,100,40,.08),transparent);
+  }
+  [data-theme="warm"] .card{
+    background:#faf4ea;
+    border:2px solid #2c1a0e;
+    box-shadow:0 2px 8px rgba(80,40,10,.08),0 1px 0 rgba(255,255,255,.7) inset;
+  }
+  [data-theme="warm"] .card:hover{box-shadow:0 6px 24px rgba(80,40,10,.15),0 1px 0 rgba(255,255,255,.8) inset;border-color:#1a0e06}
+  [data-theme="warm"] .tabs{background:#e8dcc8;border-color:#c8b898}
+  [data-theme="warm"] .tab{color:#9a7a5a}
+  [data-theme="warm"] .tab.active{background:#2c1a0e;color:#faf4ea}
+  [data-theme="warm"] .btn{background:#faf4ea;border-color:#c8b898;color:#5c3d22}
+  [data-theme="warm"] .btn:hover{background:#2c1a0e;color:#faf4ea;border-color:#2c1a0e}
+  [data-theme="warm"] .btn.primary{background:#2c1a0e;color:#faf4ea;border-color:#2c1a0e}
+  [data-theme="warm"] .btn.primary:hover{background:#1a0e06}
+  [data-theme="warm"] .progress-bar{background:#e8dcc8;border-color:#ddd0ba}
+  [data-theme="warm"] input[type=range].slider::-webkit-slider-runnable-track{background:#ddd0ba}
+  [data-theme="warm"] input[type=range].slider::-moz-range-track{background:#ddd0ba}
+  [data-theme="warm"] .step-btn{background:#faf4ea;border-color:#c8b898;color:#9a7a5a}
+  [data-theme="warm"] .step-btn:hover{background:#2c1a0e;color:#faf4ea;border-color:#2c1a0e}
+  [data-theme="warm"] .todos{border-color:#ddd0ba}
+  [data-theme="warm"] .todos-toggle:hover{background:#e8dcc8}
+  [data-theme="warm"] .todos-pill{background:#e8dcc8;border-color:#c8b898;color:#9a7a5a}
+  [data-theme="warm"] .todo:hover{background:#f0e4ce}
+  [data-theme="warm"] .todo-check{border-color:#c8aa88;background:#faf4ea}
+  [data-theme="warm"] .todo-weight{background:#f0e4ce;border-color:#c8b898}
+  [data-theme="warm"] .add-todo{border-color:#c8b898;color:#c8aa88}
+  [data-theme="warm"] .add-todo:hover{border-color:#9a7a5a;color:#5c3d22;background:#f0e4ce}
+  [data-theme="warm"] .theme-toggle{background:#faf4ea;border-color:#c8b898;color:#9a7a5a}
+  [data-theme="warm"] .user-chip{background:#faf4ea;border-color:#c8b898}
+  [data-theme="warm"] .user-chip .avatar{background:#2c1a0e;color:#faf4ea}
+  [data-theme="warm"] .user-menu{background:#faf4ea;border-color:#c8b898}
+  [data-theme="warm"] .auth-card{background:#faf4ea;border-color:#ddd0ba}
+  [data-theme="warm"] .auth-field input{background:#f0e4ce;border-color:#c8b898}
+  [data-theme="warm"] .auth-submit{background:#2c1a0e;color:#faf4ea;border-color:#2c1a0e}
+  [data-theme="warm"] .header{border-color:#ddd0ba}
+  [data-theme="warm"] .modal{background:#faf4ea;border-color:#ddd0ba}
+  [data-theme="warm"] .card-drag-handle,[data-theme="warm"] .del-project-btn{color:#c8aa88}
+  [data-theme="warm"] .card-drag-handle:hover{color:#9a7a5a;background:#e8dcc8}
+  [data-theme="warm"] .auth-screen{background:#f2e8d9}
+
+  /* ══ OCEAN THEME (cyan claro / azul oscuro acentos) ══════════ */
+  [data-theme="ocean"]{
+    --bg:#d4eef5;
+    --bg-card:#eafaff;
+    --bg-elev:#bfe4ee;
+    --ink:#0a2f4a;
+    --ink-soft:#1a4870;
+    --ink-mute:#5a8aa8;
+    --ink-faint:#9ec6d8;
+    --line:#a8d4e2;
+    --line-strong:#7ec0d2;
+    --red:#dc2626;
+    --orange:#ea7c1c;
+    --green:#16a34a;
+    --shadow-sm:0 1px 3px rgba(10,40,80,.08);
+    --shadow:0 2px 8px rgba(10,40,80,.1),0 16px 40px rgba(10,40,80,.08);
+    --shadow-lg:0 8px 32px rgba(10,40,80,.15),0 40px 80px rgba(10,40,80,.1);
+    --bg-gradient-a:rgba(50,180,220,.1);
+    --bg-gradient-b:rgba(30,140,200,.08);
+    --thumb-bg:#0a2f4a;
+    --thumb-border:#eafaff;
+    --check-fg:#eafaff;
+  }
+  [data-theme="ocean"] body{
+    background-image:
+      radial-gradient(ellipse 80% 50% at 30% 0%,rgba(60,180,220,.18),transparent),
+      radial-gradient(ellipse 60% 40% at 80% 100%,rgba(30,140,200,.12),transparent);
+  }
+  [data-theme="ocean"] .card{
+    background:#eafaff;
+    border:2px solid #0a2f4a;
+    box-shadow:0 2px 8px rgba(10,40,80,.08),0 1px 0 rgba(255,255,255,.7) inset;
+  }
+  [data-theme="ocean"] .card:hover{
+    box-shadow:0 8px 32px rgba(10,40,80,.18),0 1px 0 rgba(255,255,255,.8) inset;
+    border-color:#062138;
+    transform:translateY(-3px);
+  }
+  [data-theme="ocean"] .card::before{display:none}
+  [data-theme="ocean"] .tabs{background:#bfe4ee;border-color:#7ec0d2}
+  [data-theme="ocean"] .tab{color:#5a8aa8}
+  [data-theme="ocean"] .tab:hover:not(.active){color:#1a4870;background:rgba(10,47,74,.06)}
+  [data-theme="ocean"] .tab.active{background:#0a2f4a;color:#eafaff;font-weight:600;box-shadow:0 2px 10px rgba(10,40,80,.25)}
+  [data-theme="ocean"] .btn{background:#eafaff;border-color:#7ec0d2;color:#1a4870}
+  [data-theme="ocean"] .btn:hover{background:#0a2f4a;color:#eafaff;border-color:#0a2f4a}
+  [data-theme="ocean"] .btn.primary{background:#0a2f4a;color:#eafaff;border-color:#0a2f4a;box-shadow:0 2px 12px rgba(10,40,80,.2)}
+  [data-theme="ocean"] .btn.primary:hover{background:#062138;filter:none}
+  [data-theme="ocean"] .btn-icon{color:#5a8aa8}
+  [data-theme="ocean"] .btn-icon:hover{background:#bfe4ee;color:#1a4870;border-color:#7ec0d2}
+  [data-theme="ocean"] .header{border-color:#a8d4e2}
+  [data-theme="ocean"] .progress-bar{background:#bfe4ee;border-color:#a8d4e2}
+  [data-theme="ocean"] input[type=range].slider::-webkit-slider-runnable-track{background:#a8d4e2}
+  [data-theme="ocean"] input[type=range].slider::-moz-range-track{background:#a8d4e2}
+  [data-theme="ocean"] .step-btn{background:#eafaff;border-color:#7ec0d2;color:#5a8aa8}
+  [data-theme="ocean"] .step-btn:hover{background:#0a2f4a;color:#eafaff;border-color:#0a2f4a}
+  [data-theme="ocean"] .todos{border-color:#a8d4e2}
+  [data-theme="ocean"] .todos-toggle:hover{background:#d4eef5}
+  [data-theme="ocean"] .todos-pill{background:#bfe4ee;border-color:#7ec0d2;color:#1a4870}
+  [data-theme="ocean"] .todos-chevron{color:#7ec0d2}
+  [data-theme="ocean"] .todo:hover{background:#d4eef5}
+  [data-theme="ocean"] .todo-check{border-color:#7ec0d2;background:#eafaff}
+  [data-theme="ocean"] .todo-check:hover{border-color:#1a4870}
+  [data-theme="ocean"] .todo-weight{background:#d4eef5;border-color:#7ec0d2}
+  [data-theme="ocean"] .todo-weight:focus{background:#eafaff;border-color:#0a2f4a}
+  [data-theme="ocean"] .add-todo{border-color:#7ec0d2;color:#7ec0d2}
+  [data-theme="ocean"] .add-todo:hover{border-color:#1a4870;color:#0a2f4a;background:#d4eef5}
+  [data-theme="ocean"] .card-drag-handle,[data-theme="ocean"] .del-project-btn{color:#9ec6d8}
+  [data-theme="ocean"] .card-drag-handle:hover{color:#1a4870;background:#bfe4ee}
+  [data-theme="ocean"] .theme-toggle{background:#eafaff;border-color:#7ec0d2;color:#1a4870}
+  [data-theme="ocean"] .theme-toggle:hover{background:#bfe4ee}
+  [data-theme="ocean"] .user-chip{background:#eafaff;border-color:#7ec0d2;color:#1a4870}
+  [data-theme="ocean"] .user-chip .avatar{background:#0a2f4a;color:#eafaff}
+  [data-theme="ocean"] .user-menu{background:#eafaff;border-color:#7ec0d2;box-shadow:0 16px 48px rgba(10,40,80,.2)}
+  [data-theme="ocean"] .user-menu button{color:#1a4870}
+  [data-theme="ocean"] .user-menu button:hover{background:#d4eef5}
+  [data-theme="ocean"] .modal{background:#eafaff;border-color:#7ec0d2}
+  [data-theme="ocean"] .auth-screen{background:#d4eef5}
+  [data-theme="ocean"] .auth-card{background:#eafaff;border-color:#a8d4e2}
+  [data-theme="ocean"] .auth-field input{background:#d4eef5;border-color:#7ec0d2;color:#0a2f4a}
+  [data-theme="ocean"] .auth-field input:focus{border-color:#0a2f4a;box-shadow:0 0 0 3px rgba(10,47,74,.1)}
+  [data-theme="ocean"] .auth-field input::placeholder{color:#9ec6d8}
+  [data-theme="ocean"] .auth-submit{background:#0a2f4a;color:#eafaff;border-color:#0a2f4a;box-shadow:0 4px 20px rgba(10,40,80,.2)}
+  [data-theme="ocean"] .auth-submit:hover:not(:disabled){background:#062138;filter:none}
+  [data-theme="ocean"] .auth-switch button{color:#1a4870}
+  [data-theme="ocean"] .auth-switch button:hover{color:#062138}
+  [data-theme="ocean"] .footer{color:#9ec6d8}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html{height:100%;-webkit-text-size-adjust:100%}
   html,body{background:var(--bg);color:var(--ink);font-family:'Inter Tight',sans-serif;font-feature-settings:"ss01","cv11";-webkit-font-smoothing:antialiased;transition:background-color .25s ease,color .25s ease;overscroll-behavior:none}
@@ -204,24 +357,19 @@
   .btn-icon{padding:6px 8px;font-size:12px;background:transparent;border:1px solid transparent;color:var(--ink-mute);border-radius:6px;cursor:pointer;transition:all .15s;font-family:'JetBrains Mono',monospace}
   .btn-icon:hover{background:var(--bg-elev);color:var(--ink);border-color:var(--line)}
 
-  /* THEME TOGGLE */
+  /* THEME TOGGLE (cycles through themes) */
   .theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;border:1px solid var(--line-strong);background:var(--bg-card);color:var(--ink);cursor:pointer;transition:all .2s;flex-shrink:0}
   .theme-toggle:hover{background:var(--bg-elev);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
-  .theme-toggle svg{width:17px;height:17px;transition:transform .35s cubic-bezier(.4,1.4,.5,1)}
-  .theme-toggle:hover svg{transform:rotate(-12deg)}
-  [data-theme="dark"] .theme-toggle:hover svg{transform:rotate(12deg)}
-  .theme-toggle .icon-sun{display:none}
-  .theme-toggle .icon-moon{display:block}
-  [data-theme="dark"] .theme-toggle .icon-sun{display:block}
-  [data-theme="dark"] .theme-toggle .icon-moon{display:none}
+  .theme-toggle svg{width:16px;height:16px;transition:transform .35s cubic-bezier(.4,1.4,.5,1)}
+  .theme-toggle:hover svg{transform:rotate(45deg)}
 
   /* GRID */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:20px}
 
   /* CARD */
-  .card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;transition:transform .25s,box-shadow .25s,border-color .25s,background-color .25s ease;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:16px}
-  .card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);border-color:var(--line-strong)}
-  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,var(--ink));opacity:.85}
+  .card{background:var(--bg-card);border:2px solid var(--ink);border-radius:var(--radius);padding:24px;transition:transform .25s,box-shadow .25s,border-color .25s,background-color .25s ease;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:16px}
+  .card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+  .card::before{display:none}
 
   .card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
   .card-title-wrap{flex:1;min-width:0}
@@ -375,8 +523,8 @@
   .modal-body{color:var(--ink-soft);font-size:14px;line-height:1.5;margin-bottom:22px}
   .modal-body strong{color:var(--ink);font-weight:500}
   .modal-actions{display:flex;justify-content:flex-end;gap:10px}
-  .btn-danger{background:var(--red);color:#fff;border-color:var(--red)}
-  .btn-danger:hover{background:var(--red);color:#fff;border-color:var(--red);filter:brightness(1.08);transform:translateY(-1px)}
+  .btn-danger{background:var(--red) !important;color:#fff !important;border-color:var(--red) !important}
+  .btn-danger:hover{background:var(--red) !important;color:#fff !important;border-color:var(--red) !important;filter:brightness(1.1);transform:translateY(-1px)}
 
   /* AUTH SCREEN */
   .auth-screen{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:900;padding:20px;background-image:radial-gradient(circle at 20% 0%,var(--bg-gradient-a),transparent 50%),radial-gradient(circle at 80% 100%,var(--bg-gradient-b),transparent 50%)}
@@ -619,11 +767,9 @@
 <!-- AUTH SCREEN -->
 <div class="auth-screen" id="authScreen">
   <button class="theme-toggle auth-theme-corner" id="authThemeToggle" title="Cambiar tema" aria-label="Cambiar tema">
-    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2.5 12h2M19.5 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
   </button>
   <div class="auth-card">
-    <div class="auth-eyebrow">Project Tracker</div>
     <h1 class="auth-title" id="authTitle">Bienvenido <em>de vuelta</em>.</h1>
     <p class="auth-sub" id="authSub">Inicia sesión para acceder a tus proyectos desde cualquier dispositivo.</p>
     <form class="auth-form" id="authForm" autocomplete="on">
@@ -650,8 +796,7 @@
 
   <header class="header">
     <div class="brand">
-      <div class="eyebrow">Project Tracker</div>
-      <h1>Cómo va <em>todo</em>.</h1>
+      <h1>Cada día <em>cuenta</em>.</h1>
       <div class="date" id="todayDate"></div>
     </div>
     <div class="header-stats">
@@ -663,9 +808,8 @@
         <div class="stat-label">Progreso medio</div>
         <div class="stat-value" id="avgProgress">0<sup>%</sup></div>
       </div>
-      <button class="theme-toggle" id="themeToggle" title="Cambiar tema" aria-label="Cambiar tema">
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2.5 12h2M19.5 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      <button class="theme-toggle" id="themeToggle" title="Cambiar tema">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
       </button>
       <div class="user-wrap">
         <button class="user-chip" id="userChip" title="Cuenta">
@@ -694,7 +838,6 @@
   <div class="toolbar">
     <div class="toolbar-left" id="toolbarInfo">— vista de hoy —</div>
     <div class="toolbar-right">
-      <div class="sync-status" id="syncStatus"><span class="sync-dot"></span><span id="syncText">—</span></div>
       <button class="btn primary" id="addProjectBtn"><span class="plus">+</span> Nuevo proyecto</button>
     </div>
   </div>
@@ -1662,24 +1805,28 @@
   });
 
   // ============ THEME ============
+  const THEMES = ['light','dark','warm','ocean'];
+
   function applyTheme(t){
-    document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+    if(!THEMES.includes(t)) t = 'light';
+    document.documentElement.setAttribute('data-theme', t);
   }
   function loadTheme(){
     const v = themeStore.get();
-    if(v) return v;
+    if(v && THEMES.includes(v)) return v;
     if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
     return 'light';
   }
   function saveThemePref(t){ themeStore.set(t); }
-  function toggleAppTheme(){
-    const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-    const next = current === 'dark' ? 'light' : 'dark';
+
+  function cycleTheme(){
+    const current = document.documentElement.getAttribute('data-theme') || 'light';
+    const next = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length];
     applyTheme(next);
     saveThemePref(next);
   }
-  document.getElementById('themeToggle').onclick = toggleAppTheme;
-  document.getElementById('authThemeToggle').onclick = toggleAppTheme;
+  document.getElementById('themeToggle').onclick = cycleTheme;
+  document.getElementById('authThemeToggle').onclick = cycleTheme;
 
   // ============ AUTH UI ============
   const authScreen = document.getElementById('authScreen');
